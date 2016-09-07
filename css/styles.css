@@ -82,7 +82,7 @@ h2{
 
 .delete-btn{
   display: inline-block;
-  margin-left: 250px;
+  margin-left: 260px;
   background: none;
   border: none;
   height: 35px;
@@ -105,13 +105,16 @@ h2{
 
 .upvote-btn{
   display: inline-block;
+  cursor: pointer;
   background: none;
   border: none;
   height: 35px;
   width: 35px;
 }
+
 .downvote-btn{
   display: inline-block;
+  cursor: pointer;
   background: none;
   border: none;
   height: 35px;
