@@ -1,5 +1,6 @@
 var $ideaTitleInput = $('#idea-title-input');
 var $ideaBodyInput = $('#idea-body-input');
+var $form = $('#input-form');
 
 function newUniqueID () {
   return Date.now();
@@ -19,3 +20,7 @@ function getUserTitle () {
 function getUserBody () {
   return $inputBodyInput.value;
 }
+
+$form.submit( function(){
+
+});
