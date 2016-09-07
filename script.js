@@ -27,7 +27,6 @@ $form.submit( function(){
   // Create new Idea object
   var newIdea = new Idea(newUniqueID(), getUserTitle(), getUserBody());
   // Add to page
-  debugger;
   $ideaList.append(
     "<li>"+
       "<div class='idea-header'>"+
@@ -50,6 +49,7 @@ $form.submit( function(){
   "</li>"
 );
 debugger;
+return false;
   // new function () Convert to JSON
   // new function () Add to localStorage
 });
