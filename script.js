@@ -3,8 +3,6 @@ var $ideaTitleInput = $('#idea-title-input');
 var $ideaBodyInput = $('#idea-body-input');
 var $form = $('#input-form');
 var $ideaList = $('#idea-list');
-// var arrayIdeaIDs = [];
-// localStorage.setItem('ideaArray', JSON.stringify(arrayIdeaIDs));
 
 function newUniqueID () {
   return Date.now();
@@ -130,3 +128,53 @@ function removeIDfromArray(id) {
   arrayIdeaIDs.splice(index, 1);
   localStorage.setItem('ideaArray', JSON.stringify(arrayIdeaIDs));
 }
+
+$ideaList.on('click', '.upvote-btn', function(){
+  var status = $(this).siblings('.idea-quality').text();
+  $(this).siblings('.idea-quality').text(qualityUp(status));
+});
+
+$ideaList.on('click', '.downvote-btn', function(){
+  var status = $(this).siblings('.idea-quality').text();
+  $(this).siblings('.idea-quality').text(qualityDown(status));
+});
+
+function qualityUp(status) {
+  if (status === 'swill') {
+    return 'plausible';
+  } else {
+    return 'genius';
+  }
+}
+
+function qualityDown(status) {
+  if (status === 'genius') {
+    return 'plausible';
+  } else {
+    return 'swill';
+  }
+}
+
+$ideaList.on('click', 'h2', function(){
+  var text = $(this).text();
+  $(this).replaceWith('<textarea class="titleField">'+text+'</textarea>');
+});
+
+$ideaList.on('click', 'p', function(){
+  var text = $(this).text();
+  $(this).replaceWith('<textarea class="bodyField">'+text+'</textarea>');
+});
+
+$ideaList.on('mouseover', 'textarea', function(){
+  $(this).focus();
+});
+
+$ideaList.on('blur', '.titleField', function(){
+  var text = $(this).val();
+  $(this).replaceWith('<h2>'+text+'</h2>');
+});
+
+$ideaList.on('blur', '.bodyField', function(){
+  var text = $(this).val();
+  $(this).replaceWith('<p>'+text+'</p>');
+});
