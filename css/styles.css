@@ -4,12 +4,57 @@ body{
 }
 
 header{
-
+  text-align: center;
+  background-color: #E5F3F2;
+  padding: 10px;
 }
 
 h1{
   display: inline-block;
+  font-size: 50px;
+  font-family: 'Roboto Slab', serif;
   margin: 0;
   padding: 0;
   border: 0;
+}
+
+#idea-title{
+  color: #00A79D
+}
+
+#box-title{
+  margin-left: -3px;
+  color: #6D6E71
+}
+
+form{
+  text-align: center;
+  background-color: #E5F3F2;
+  padding: 20px;
+  margin-bottom: 25px;
+}
+
+input{
+  border-width: 1px;
+  border-style: solid;
+  border-color: #D1d3d4;
+  font-size: 15px;
+  display: block;
+  margin: auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 400px;
+  height: 25px;
+}
+
+#submit-button{
+  background-color: #00A79D;
+  border-style: none;
+  color: #ffffff;
+}
+
+#submit-button:hover{
+  background-color: #045E55;
+  color: #ffffff;
+  border-style: none;
 }
