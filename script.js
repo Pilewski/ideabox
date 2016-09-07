@@ -1,8 +1,10 @@
-var arrayIdeaIDs = [];
+
+
 var $ideaTitleInput = $('#idea-title-input');
 var $ideaBodyInput = $('#idea-body-input');
 var $form = $('#input-form');
 var $ideaList = $('#idea-list');
+var arrayIdeaIDs = [];
 
 function newUniqueID () {
   return Date.now();
@@ -24,10 +26,11 @@ function getUserBody () {
 }
 
 $form.submit( function(){
+  event.preventDefault();
   // Create new Idea object
   var newIdea = new Idea(newUniqueID(), getUserTitle(), getUserBody());
   // Add to page
-  $ideaList.append(
+  $ideaList.prepend(
     "<li>"+
       "<div class='idea-header'>"+
         "<h2>"+newIdea.title+"</h2>"+
@@ -48,11 +51,7 @@ $form.submit( function(){
     "</div>"+
   "</li>"
   );
-
     ideaToStorage(newIdea);
-    debugger;
-    pushNewID(newIdea.id);
-    debugger;
     return false;
   // new function () Convert to JSON
   // new function () Add to localStorage
@@ -63,10 +62,18 @@ function ideaStringify(newIdea) {
 }
 function ideaToStorage(newIdea) {
   localStorage.setItem(newIdea.id, ideaStringify(newIdea));
+  updateIDArray(newIdea.id);
 }
 
 function pushNewID(id) {
   arrayIdeaIDs.push(id);
+}
+
+function updateIDArray(id) {
+  var idArrayRAW = localStorage.getItem('ideaArray');
+  arrayIdeaIDs = JSON.parse(idArrayRAW);
+  arrayIdeaIDs.push(id);
+  localStorage.setItem('ideaArray', JSON.stringify(arrayIdeaIDs));
 }
 
 function retrieveIdea(id) {
