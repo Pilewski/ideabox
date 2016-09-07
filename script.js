@@ -114,12 +114,19 @@ $(window).load(function (){
 });
 
 $ideaList.on('click', '.delete-btn', function(){
-  debugger;
   $(this).parent().parent().remove();
-  $(this).parent().parent().attr("value");
-
+  var id = $(this).parent().parent().attr("value");
+  removeIdeaStorage(id);
+  removeIDfromArray(id);
 });
 
-function removeIdeaStorage() {
+function removeIdeaStorage(id) {
+  localStorage.removeItem(id);
+}
 
+function removeIDfromArray(id) {
+  var arrayIdeaIDs = retrieveIDarray();
+  var index = arrayIdeaIDs.indexOf(id);
+  arrayIdeaIDs.splice(index, 1);
+  localStorage.setItem('ideaArray', JSON.stringify(arrayIdeaIDs));
 }
