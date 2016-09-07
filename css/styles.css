@@ -6,12 +6,12 @@ body{
 header{
   text-align: center;
   background-color: #E5F3F2;
-  padding: 10px;
+  padding-top: 20px;
 }
 
 h1{
   display: inline-block;
-  font-size: 50px;
+  font-size: 45px;
   font-family: 'Roboto Slab', serif;
   margin: 0;
   padding: 0;
@@ -57,4 +57,70 @@ input{
   background-color: #045E55;
   color: #ffffff;
   border-style: none;
+}
+
+ul{
+width: 400px;
+margin: auto;
+}
+
+li{
+  border-bottom: 2px #D1d3d4 solid;
+  margin-bottom: 10px;
+}
+
+.idea-header{
+  display: flex;
+  align-items: center;
+}
+
+h2{
+  color: #6D6E71;
+  display: inline-block;
+  font-family: 'Roboto Slab', serif;
+}
+
+.delete-btn{
+  display: inline-block;
+  margin-left: 250px;
+  background: none;
+  border: none;
+  height: 35px;
+  width: 35px;
+}
+
+.delete-btn:focus{
+  outline: none;
+}
+
+.idea-body{
+  color: #939598;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.idea-footer{
+  display: flex;
+  align-items: center;
+}
+
+.upvote-btn{
+  display: inline-block;
+  background: none;
+  border: none;
+  height: 35px;
+  width: 35px;
+}
+.downvote-btn{
+  display: inline-block;
+  background: none;
+  border: none;
+  height: 35px;
+  width: 35px;
+}
+
+.idea-quality{
+  color: #6D6E71;
+  display: inline-block;
+  margin-left: 50px;
+  align-items: center;
 }

@@ -17,18 +17,38 @@
       </header>
 
       <form id = "input-form">
-          <input type="text" class='input' id='idea-title-input' size='50' placeholder="Title">
+          <input type="text" class='input' id='idea-title-input' size='50' placeholder=" Title">
           <input type="text" class='input' id='idea-body-input'
-          size='50' placeholder="Body">
+          size='50' placeholder=" Body">
           <input type="submit" id='submit-button' value='save'>
       </form>
 
 
     <section id = "idea-section">
 
-      <input type="text" id='search-input' placeholder="search">
+      <input type="text" id='search-input' placeholder=" Search">
 
       <ul id = 'idea-list'>
+        <li>
+          <div class="idea-header">
+            <h2>Example Idea</h2>
+            <button type="button" class="delete-btn"><img src="./imgs/delete.svg" alt="" /></button>
+          </div>
+
+          <div class="idea-body">
+            <p>
+              text text text text text
+            </p>
+          </div>
+
+          <div class="idea-footer">
+            <button type="button" class="upvote-btn"><img src="./imgs/upvote.svg" alt="" /></button>
+            <button type="button" class="downvote-btn"><img src="./imgs/downvote.svg" alt="" /></button>
+            <article class="idea-quality">
+              quality: swill
+            </article>
+          </div>
+        </li>
 
       </ul>
     </section>
