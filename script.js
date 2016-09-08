@@ -4,15 +4,15 @@ var $ideaBodyInput = $('#idea-body-input');
 var $form = $('#input-form');
 var $ideaList = $('#idea-list');
 
-function newUniqueID () {
-  return Date.now();
-}
-
 function Idea(id, title, body) {
   this.id = id;
   this.title = title;
   this.body = body;
   this.quality = 'swill';
+}
+
+function newUniqueID () {
+  return Date.now();
 }
 
 function getUserTitle () {
@@ -33,19 +33,17 @@ $form.submit( function(){
         "<button type='button' class='delete-btn'>"+
         "<img src='./imgs/delete.svg' /></button>"+
       "</div>"+
-
-    "<div class='idea-body'>"+
-      "<p>"+newIdea.body+"</p>"+
-    "</div>"+
-
-    "<div class='idea-footer'>"+
-      "<button type='button' class='upvote-btn'><img src='./imgs/upvote.svg'/></button>"+
-      "<button type='button' class='downvote-btn'><img src='./imgs/downvote.svg' /></button>"+
-      "<article class='idea-quality'>"+
-        newIdea.quality+
-      "</article>"+
-    "</div>"+
-  "</li>"
+      "<div class='idea-body'>"+
+        "<p>"+newIdea.body+"</p>"+
+      "</div>"+
+      "<div class='idea-footer'>"+
+        "<button type='button' class='upvote-btn'><img src='./imgs/upvote.svg'/></button>"+
+        "<button type='button' class='downvote-btn'><img src='./imgs/downvote.svg' /></button>"+
+        "<article class='idea-quality'>"+
+          newIdea.quality+
+        "</article>"+
+      "</div>"+
+    "</li>"
   );
     ideaToStorage(newIdea);
     return false;
@@ -54,13 +52,10 @@ $form.submit( function(){
 function ideaStringify(newIdea) {
   return JSON.stringify(newIdea);
 }
+
 function ideaToStorage(newIdea) {
   localStorage.setItem(newIdea.id, ideaStringify(newIdea));
   updateIDArray(newIdea.id);
-}
-
-function pushNewID(id) {
-  IdeaIDArray.push(id);
 }
 
 function updateIDArray(id) {
@@ -72,12 +67,11 @@ function updateIDArray(id) {
 function retrieveIdea(id) {
   return JSON.parse(localStorage.getItem(id));
 }
-
 function retrieveIDArray() {
   return JSON.parse(localStorage.getItem('idArray'));
 }
-// on page load
-$(document).load(function (){
+
+$(window).load(function (){
   var IdeaIDArray = retrieveIDArray();
   IdeaIDArray.sort();
     for (var i = 0; i < IdeaIDArray.length; i++) {
@@ -89,11 +83,9 @@ $(document).load(function (){
             "<button type='button' class='delete-btn'>"+
             "<img src='./imgs/delete.svg' /></button>"+
           "</div>"+
-
           "<div class='idea-body'>"+
             "<p>"+existingIdea.body+"</p>"+
           "</div>"+
-
           "<div class='idea-footer'>"+
             "<button type='button' class='upvote-btn'><img src='./imgs/upvote.svg'/></button>"+
             "<button type='button' class='downvote-btn'><img src='./imgs/downvote.svg' /></button>"+
@@ -128,7 +120,6 @@ $ideaList.on('click', '.upvote-btn', function(){
   var status = $(this).siblings('.idea-quality');
   status.text(qualityUp(status.text()));
 });
-
 $ideaList.on('click', '.downvote-btn', function(){
   var status = $(this).siblings('.idea-quality');
   status.text(qualityDown(status.text()));
@@ -141,7 +132,6 @@ function qualityUp(status) {
     return 'genius';
   }
 }
-
 function qualityDown(status) {
   if (status === 'genius') {
     return 'plausible';
@@ -154,23 +144,20 @@ $ideaList.on('click', 'h2', function(){
   var text = $(this).text();
   $(this).replaceWith('<textarea class="titleField">'+text+'</textarea>');
 });
-
 $ideaList.on('click', 'p', function(){
   var text = $(this).text();
   $(this).replaceWith('<textarea class="bodyField">'+text+'</textarea>');
-});
-
-
-$ideaList.on('mouseover', 'textarea', function(){
-  $(this).focus();
 });
 
 $ideaList.on('blur', '.titleField', function(){
   var text = $(this).val();
   $(this).replaceWith('<h2>'+text+'</h2>');
 });
-
 $ideaList.on('blur', '.bodyField', function(){
   var text = $(this).val();
   $(this).replaceWith('<p>'+text+'</p>');
+});
+
+$ideaList.on('mouseover', 'textarea', function(){
+  $(this).focus();
 });
