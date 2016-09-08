@@ -110,28 +110,28 @@ $(window).load(function (){
    }
 });
 
-
-$search.on('keyup', function(){
-
-  var searchString = getSearchString();
-  var IdeaIDArray = retrieveIDArray();
-
-  //clear list items
-  for (var i = 0; i < IdeaIDArray.length; i++) {
-    var existingIdea = retrieveIdea(IdeaIDArray[i]);
-
-    if(!(existingIdea.title.includes(searchString)) && !(existingIdea.body.includes(searchString))){
-        $(this).siblings().children("[value="+existingIdea.id+"]").hide();
-    } else {
-        $(this).siblings().children("[value="+existingIdea.id+"]").show();
-    }
-
-  }
-});
-
 function getSearchString(){
   return $search.val();
 }
+
+function showOrHideIdeas(searchString, ideaIDArray){
+  for (var i = 0; i < ideaIDArray.length; i++) {
+    var existingIdea = retrieveIdea(ideaIDArray[i]);
+
+    if(!(existingIdea.title.includes(searchString)) && !(existingIdea.body.includes(searchString))){
+        $search.siblings().children("[value="+existingIdea.id+"]").hide();
+    } else {
+        $search.siblings().children("[value="+existingIdea.id+"]").show();
+    }
+  }
+}
+
+$search.on('keyup', function(){
+  var searchString = getSearchString();
+  var ideaIDArray = retrieveIDArray();
+  showOrHideIdeas(searchString,ideaIDArray);
+});
+
 
 $ideaList.on('click', '.delete-btn', function(){
   $(this).closest('li').remove();
