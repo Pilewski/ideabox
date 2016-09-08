@@ -117,14 +117,13 @@ $search.on('keyup', function(){
   var IdeaIDArray = retrieveIDArray();
 
   //clear list items
-
   for (var i = 0; i < IdeaIDArray.length; i++) {
     var existingIdea = retrieveIdea(IdeaIDArray[i]);
 
-    //check if search string is in title or body
     if(!(existingIdea.title.includes(searchString)) && !(existingIdea.body.includes(searchString))){
-      console.log('blah');
-      $(this).siblings().children("[value="+existingIdea.id+"]").hide();
+        $(this).siblings().children("[value="+existingIdea.id+"]").hide();
+    } else {
+        $(this).siblings().children("[value="+existingIdea.id+"]").show();
     }
 
   }
