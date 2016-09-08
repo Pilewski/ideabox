@@ -114,8 +114,28 @@ h2{
   resize: none;
   text-align: left;
 }
-
-
+ .bodyField {
+   border-width: 1px;
+   border-style: solid;
+   border-color: #D1d3d4;
+   font-size: 15px;
+   font-family: 'Open Sans', sans-serif;
+   height: 4em;
+   width: 400px;
+   resize: none;
+   text-align: left;
+ }
+ .titleField {
+   border-width: 1px;
+   border-style: solid;
+   border-color: #D1d3d4;
+   font-size: 15px;
+   font-family: 'Open Sans', sans-serif;
+   height: 1.5em;
+   width: 300px;
+   resize: none;
+   text-align: left;
+ }
 .idea-footer{
   display: flex;
   align-items: center;
@@ -154,4 +174,8 @@ h2{
   display: inline-block;
   margin-left: 5px;
   align-items: center;
+}
+
+textarea {
+
 }

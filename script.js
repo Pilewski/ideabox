@@ -210,8 +210,18 @@ $ideaList.on('click', 'p', function(){
 
 $ideaList.on('blur', '.titleField', function(){
   var text = $(this).val();
+  var id = $(this).closest('li').attr("value");
+  var editedIdea = retrieveIdea(id);
+
+  removeIdeaStorage(id);
+  removeIDfromArray(id);
+  
+  editedIdea.title = text;
+  ideaToStorage(editedIdea);
+
   $(this).replaceWith('<h2>'+text+'</h2>');
 });
+
 $ideaList.on('blur', '.bodyField', function(){
   var text = $(this).val();
   $(this).replaceWith('<p>'+text+'</p>');
