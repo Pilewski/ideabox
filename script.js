@@ -25,9 +25,7 @@ function getUserBody () {
 
 $form.submit( function(){
   event.preventDefault();
-  // Create new Idea object
   var newIdea = new Idea(newUniqueID(), getUserTitle(), getUserBody());
-  // Add to page
   $ideaList.prepend(
     "<li value="+newIdea.id+">"+
       "<div class='idea-header'>"+
@@ -128,13 +126,13 @@ function removeIDfromArray(id) {
 }
 
 $ideaList.on('click', '.upvote-btn', function(){
-  var status = $(this).siblings('.idea-quality').text();
-  $(this).siblings('.idea-quality').text(qualityUp(status));
+  var status = $(this).siblings('.idea-quality');
+  status.text(qualityUp(status.text()));
 });
 
 $ideaList.on('click', '.downvote-btn', function(){
-  var status = $(this).siblings('.idea-quality').text();
-  $(this).siblings('.idea-quality').text(qualityDown(status));
+  var status = $(this).siblings('.idea-quality');
+  status.text(qualityDown(status.text()));
 });
 
 function qualityUp(status) {
