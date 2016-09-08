@@ -60,13 +60,13 @@ function ideaToStorage(newIdea) {
 }
 
 function pushNewID(id) {
-  arrayIdeaIDs.push(id);
+  IdeaIDArray.push(id);
 }
 
 function updateIDArray(id) {
-  var arrayIdeaIDs = retrieveIDArray();
-  arrayIdeaIDs.push(id);
-  localStorage.setItem('idArray', JSON.stringify(arrayIdeaIDs));
+  var IdeaIDArray = retrieveIDArray();
+  IdeaIDArray.push(id);
+  localStorage.setItem('idArray', JSON.stringify(IdeaIDArray));
 }
 
 function retrieveIdea(id) {
@@ -78,11 +78,11 @@ function retrieveIDArray() {
   return JSON.parse(localStorage.getItem('idArray'));
 }
 // on page load
-$(window).load(function (){
-  var arrayIdeaIDs = retrieveIDArray();
-  arrayIdeaIDs.sort();
-    for (var i = 0; i < arrayIdeaIDs.length; i++) {
-      var existingIdea = retrieveIdea(arrayIdeaIDs[i]);
+$(document).load(function (){
+  var IdeaIDArray = retrieveIDArray();
+  IdeaIDArray.sort();
+    for (var i = 0; i < IdeaIDArray.length; i++) {
+      var existingIdea = retrieveIdea(IdeaIDArray[i]);
       $ideaList.prepend(
         "<li value="+existingIdea.id+">"+
           "<div class='idea-header'>"+
@@ -119,10 +119,10 @@ function removeIdeaStorage(id) {
 }
 
 function removeIDfromArray(id) {
-  var arrayIdeaIDs = retrieveIDArray();
-  var index = arrayIdeaIDs.indexOf(id);
-  arrayIdeaIDs.splice(index, 1);
-  localStorage.setItem('idArray', JSON.stringify(arrayIdeaIDs));
+  var IdeaIDArray = retrieveIDArray();
+  var index = IdeaIDArray.indexOf(id);
+  IdeaIDArray.splice(index, 1);
+  localStorage.setItem('idArray', JSON.stringify(IdeaIDArray));
 }
 
 $ideaList.on('click', '.upvote-btn', function(){
