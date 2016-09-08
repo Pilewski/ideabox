@@ -232,6 +232,11 @@ $ideaList.on('click', 'p', function(){
 
 $ideaList.on('blur', '.titleField', function(){
   var text = $(this).val();
+
+  if(text===''){
+    text = 'Title';
+  }
+
   var id = parseInt($(this).closest('li').attr("value"));
   var editedIdea = retrieveIdea(id);
 
@@ -245,6 +250,10 @@ $ideaList.on('blur', '.titleField', function(){
 
 $ideaList.on('blur', '.bodyField', function(){
   var text = $(this).val();
+
+  if(text===''){
+    text = 'Body';
+  }
   var id = parseInt($(this).closest('li').attr("value"));
   var editedIdea = retrieveIdea(id);
 
