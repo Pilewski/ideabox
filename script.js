@@ -4,6 +4,8 @@ var $ideaBodyInput = $('#idea-body-input');
 var $form = $('#input-form');
 var $ideaList = $('#idea-list');
 var $search = $('#search-input');
+var $submit = $('#submit-button');
+
 
 
 function Idea(id, title, body) {
@@ -13,6 +15,21 @@ function Idea(id, title, body) {
   this.quality = 'swill';
 }
 
+function checkIdeaFieldsEmpty(){
+  if ($ideaTitleInput.val()==='' || $ideaBodyInput.val()===''){
+    return true;
+  }else{
+    return false;
+  }
+}
+
+function toggleSubmitDisable(){
+  if (checkIdeaFieldsEmpty()){
+    $submit.attr('disabled', true);
+  }else {
+    $submit.attr('disabled', false);
+  }
+}
 function newUniqueID () {
   return Date.now();
 }
@@ -83,6 +100,7 @@ $form.submit( function(){
 });
 
 $(window).load(function (){
+  toggleSubmitDisable();
   var IdeaIDArray = retrieveIDArray();
   IdeaIDArray.sort();
     for (var i = 0; i < IdeaIDArray.length; i++) {
@@ -108,6 +126,10 @@ $(window).load(function (){
         "</li>"
      );
    }
+});
+
+$form.on('keyup', function(){
+  toggleSubmitDisable();
 });
 
 function getSearchString(){

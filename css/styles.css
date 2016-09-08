@@ -54,8 +54,16 @@ input{
 }
 
 #submit-button:hover{
+  cursor: pointer;
   background-color: #045E55;
   color: #ffffff;
+  border-style: none;
+}
+
+#submit-button:disabled{
+  cursor: default;
+  background-color: gray;
+  color: white;
   border-style: none;
 }
 
@@ -86,6 +94,7 @@ h2{
 
 .delete-btn{
   display: inline-block;
+  cursor: pointer;
   float: right;
   background: none;
   border: none;
