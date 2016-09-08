@@ -39,6 +39,7 @@ $form.submit( function(){
       "<div class='idea-footer'>"+
         "<button type='button' class='upvote-btn'><img src='./imgs/upvote.svg'/></button>"+
         "<button type='button' class='downvote-btn'><img src='./imgs/downvote.svg' /></button>"+
+        "<span>Quality: </span>"+
         "<article class='idea-quality'>"+
           newIdea.quality+
         "</article>"+
@@ -60,6 +61,11 @@ function ideaToStorage(newIdea) {
 
 function updateIDArray(id) {
   var IdeaIDArray = retrieveIDArray();
+
+  if (IdeaIDArray === null){
+    IdeaIDArray = [];
+  }
+
   IdeaIDArray.push(id);
   localStorage.setItem('idArray', JSON.stringify(IdeaIDArray));
 }
@@ -89,6 +95,7 @@ $(window).load(function (){
           "<div class='idea-footer'>"+
             "<button type='button' class='upvote-btn'><img src='./imgs/upvote.svg'/></button>"+
             "<button type='button' class='downvote-btn'><img src='./imgs/downvote.svg' /></button>"+
+            "<span>Quality: </span>"+
             "<article class='idea-quality'>"+
              existingIdea.quality+
              "</article>"+
@@ -99,7 +106,8 @@ $(window).load(function (){
 });
 
 $ideaList.on('click', '.delete-btn', function(){
-  $(this).closest('#idea-list').remove();
+  //$(this).closest('#idea-list').remove();
+  $(this).parent().parent().remove();
   var id = $(this).closest('#idea-list').attr("value");
   removeIdeaStorage(id);
   removeIDfromArray(id);
