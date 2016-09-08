@@ -210,12 +210,11 @@ $ideaList.on('click', 'p', function(){
 
 $ideaList.on('blur', '.titleField', function(){
   var text = $(this).val();
-  var id = $(this).closest('li').attr("value");
+  var id = parseInt($(this).closest('li').attr("value"));
   var editedIdea = retrieveIdea(id);
 
   removeIdeaStorage(id);
   removeIDfromArray(id);
-  
   editedIdea.title = text;
   ideaToStorage(editedIdea);
 
@@ -224,6 +223,14 @@ $ideaList.on('blur', '.titleField', function(){
 
 $ideaList.on('blur', '.bodyField', function(){
   var text = $(this).val();
+  var id = parseInt($(this).closest('li').attr("value"));
+  var editedIdea = retrieveIdea(id);
+
+  removeIdeaStorage(id);
+  removeIDfromArray(id);
+  editedIdea.body = text;
+  ideaToStorage(editedIdea);
+
   $(this).replaceWith('<p>'+text+'</p>');
 });
 
