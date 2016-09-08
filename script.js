@@ -51,8 +51,6 @@ $form.submit( function(){
   );
     ideaToStorage(newIdea);
     return false;
-  // new function () Convert to JSON
-  // new function () Add to localStorage
 });
 
 function ideaStringify(newIdea) {
@@ -164,6 +162,7 @@ $ideaList.on('click', 'p', function(){
   var text = $(this).text();
   $(this).replaceWith('<textarea class="bodyField">'+text+'</textarea>');
 });
+
 
 $ideaList.on('mouseover', 'textarea', function(){
   $(this).focus();
