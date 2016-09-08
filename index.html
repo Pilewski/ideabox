@@ -6,6 +6,7 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:700" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="./css/styles.css">
+    <link rel="stylesheet" type="text/css" href="./css/mobile.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IdeaBox</title>
   </head>
@@ -18,8 +19,8 @@
 
       <form id = "input-form">
           <input type="text" class='input' id='idea-title-input' size='50' placeholder=" Title">
-          <input type="text" class='input' id='idea-body-input'
-          size='50' placeholder=" Body">
+          <textarea type="text" class='input' id='idea-body-input'
+          size='50' placeholder=" Body"></textarea>
           <input type="submit" id='submit-button' value='save'>
       </form>
 
@@ -37,14 +38,19 @@
 
           <div class="idea-body">
             <p>
+              text text text text text              text text text text text
               text text text text text
+              text text text text text
+              text text text text text
+              text text text text text
+
             </p>
           </div>
 
           <div class="idea-footer">
             <button type="button" class="upvote-btn"><img src="./imgs/upvote.svg" onMouseOver="this.src='./imgs/upvote-hover.svg'" onMouseOut="this.src='./imgs/upvote.svg'"/></button>
             <button type="button" class="downvote-btn"><img src="./imgs/downvote.svg"  onMouseOver="this.src='./imgs/downvote-hover.svg'" onMouseOut="this.src='./imgs/downvote.svg'" /></button>
-            <span>Quality: </span>
+            <span>quality: </span>
             <article class="idea-quality">
               swill
             </article>

@@ -60,8 +60,8 @@ input{
 }
 
 ul{
-width: 400px;
-margin: auto;
+  width: 400px;
+  margin: auto;
 }
 
 li{
@@ -70,11 +70,15 @@ li{
 }
 
 .idea-header{
-  display: flex;
+  display: inline-block;
+  width: 100%;
   align-items: center;
+  margin-bottom: 10px;
 }
 
 h2{
+  margin-top: 8px;
+  font-size: 23px;
   color: #6D6E71;
   display: inline-block;
   font-family: 'Roboto Slab', serif;
@@ -82,7 +86,7 @@ h2{
 
 .delete-btn{
   display: inline-block;
-  margin-left: 260px;
+  float: right;
   background: none;
   border: none;
   height: 35px;
@@ -96,11 +100,14 @@ h2{
 .idea-body{
   color: #939598;
   font-family: 'Open Sans', sans-serif;
+  margin-bottom: 15px;
+  word-wrap:break-word;
 }
 
 .idea-footer{
   display: flex;
   align-items: center;
+  margin-bottom: 15px;
 }
 
 .upvote-btn{
@@ -124,13 +131,15 @@ h2{
 .idea-footer span{
   color: #6D6E71;
   font-family: 'Open Sans', sans-serif;
-  margin-left: 20px;
+  font-size: 15px;
+  margin-left: 10px;
 
 }
 .idea-quality{
   color: #6D6E71;
   font-family: 'Open Sans', sans-serif;
+  font-size: 15px;
   display: inline-block;
-  margin-left: 50px;
+  margin-left: 5px;
   align-items: center;
 }

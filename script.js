@@ -5,6 +5,7 @@ var $form = $('#input-form');
 var $ideaList = $('#idea-list');
 var $search = $('#search-input');
 
+
 function Idea(id, title, body) {
   this.id = id;
   this.title = title;
@@ -44,15 +45,15 @@ function addIdToArray(id) {
 function retrieveIdea(id) {
   return JSON.parse(localStorage.getItem(id));
 }
+
 function retrieveIDArray() {
 
   if (JSON.parse(localStorage.getItem('idArray')) === null){
     return [];
   } else{
-  return JSON.parse(localStorage.getItem('idArray'));
+    return JSON.parse(localStorage.getItem('idArray'));
   }
 }
-
 
 $form.submit( function(){
   event.preventDefault();
@@ -70,7 +71,7 @@ $form.submit( function(){
       "<div class='idea-footer'>"+
         "<button type='button' class='upvote-btn'><img src='./imgs/upvote.svg'/></button>"+
         "<button type='button' class='downvote-btn'><img src='./imgs/downvote.svg' /></button>"+
-        "<span>Quality: </span>"+
+        "<span>quality: </span>"+
         "<article class='idea-quality'>"+
           newIdea.quality+
         "</article>"+
@@ -83,7 +84,6 @@ $form.submit( function(){
 
 $(window).load(function (){
   var IdeaIDArray = retrieveIDArray();
-
   IdeaIDArray.sort();
     for (var i = 0; i < IdeaIDArray.length; i++) {
       var existingIdea = retrieveIdea(IdeaIDArray[i]);
@@ -100,7 +100,7 @@ $(window).load(function (){
           "<div class='idea-footer'>"+
             "<button type='button' class='upvote-btn'><img src='./imgs/upvote.svg'/></button>"+
             "<button type='button' class='downvote-btn'><img src='./imgs/downvote.svg' /></button>"+
-            "<span>Quality: </span>"+
+            "<span>quality: </span>"+
             "<article class='idea-quality'>"+
              existingIdea.quality+
              "</article>"+
@@ -138,6 +138,14 @@ $ideaList.on('click', '.delete-btn', function(){
   var id = $(this).closest('li').attr("value");
   removeIdeaStorage(id);
   removeIDfromArray(id);
+});
+
+$ideaList.on('mouseover', '.delete-btn', function(){
+  $(this).children('img').attr('src', './imgs/delete-hover.svg');
+});
+
+$ideaList.on('mouseleave', '.delete-btn', function(){
+  $(this).children('img').attr('src', './imgs/delete.svg');
 });
 
 function removeIdeaStorage(id) {
