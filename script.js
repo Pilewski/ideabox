@@ -162,28 +162,32 @@ $ideaList.on('click', '.delete-btn', function(){
   removeIDfromArray(id);
 });
 
+function replaceImage(target, imageURL){
+  target.children('img').attr('src', imageURL);
+}
+
 $ideaList.on('mouseover', '.delete-btn', function(){
-  $(this).children('img').attr('src', './imgs/delete-hover.svg');
+  replaceImage($(this),'./imgs/delete-hover.svg');
 });
 
 $ideaList.on('mouseleave', '.delete-btn', function(){
-  $(this).children('img').attr('src', './imgs/delete.svg');
+  replaceImage($(this),'./imgs/delete.svg');
 });
 
 $ideaList.on('mouseover', '.upvote-btn', function(){
-  $(this).children('img').attr('src', './imgs/upvote-hover.svg');
+  replaceImage($(this),'./imgs/upvote-hover.svg');
 });
 
 $ideaList.on('mouseleave', '.upvote-btn', function(){
-  $(this).children('img').attr('src', './imgs/upvote.svg');
+  replaceImage($(this), './imgs/upvote.svg');
 });
 
 $ideaList.on('mouseover', '.downvote-btn', function(){
-  $(this).children('img').attr('src', './imgs/downvote-hover.svg');
+  replaceImage($(this), './imgs/downvote-hover.svg');
 });
 
 $ideaList.on('mouseleave', '.downvote-btn', function(){
-  $(this).children('img').attr('src', './imgs/downvote.svg');
+  replaceImage($(this), './imgs/downvote.svg');
 });
 
 function removeIdeaStorage(id) {
@@ -197,17 +201,23 @@ function removeIDfromArray(id) {
   localStorage.setItem('idArray', JSON.stringify(IdeaIDArray));
 }
 
-$ideaList.on('click', '.upvote-btn', function(){
-  var status = $(this).siblings('.idea-quality');
-  var newQuality = qualityUp(status.text());
-  status.text(newQuality);
-  var id = parseInt($(this).closest('li').attr("value"));
+function saveQuality(target, newQuality){
+
+  var id = parseInt(target.closest('li').attr("value"));
   var editedIdea = retrieveIdea(id);
 
   removeIdeaStorage(id);
   removeIDfromArray(id);
   editedIdea.quality = newQuality;
   ideaToStorage(editedIdea);
+}
+
+$ideaList.on('click', '.upvote-btn', function(){
+  var status = $(this).siblings('.idea-quality');
+  var newQuality = qualityUp(status.text());
+  status.text(newQuality);
+
+  saveQuality($(this), newQuality);
 });
 
 $ideaList.on('click', '.downvote-btn', function(){
@@ -215,13 +225,7 @@ $ideaList.on('click', '.downvote-btn', function(){
   var newQuality =qualityDown(status.text());
   status.text(newQuality);
 
-  var id = parseInt($(this).closest('li').attr("value"));
-  var editedIdea = retrieveIdea(id);
-
-  removeIdeaStorage(id);
-  removeIDfromArray(id);
-  editedIdea.quality = newQuality;
-  ideaToStorage(editedIdea);
+  saveQuality($(this), newQuality);
 });
 
 function qualityUp(status) {
