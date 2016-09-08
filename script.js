@@ -148,6 +148,22 @@ $ideaList.on('mouseleave', '.delete-btn', function(){
   $(this).children('img').attr('src', './imgs/delete.svg');
 });
 
+$ideaList.on('mouseover', '.upvote-btn', function(){
+  $(this).children('img').attr('src', './imgs/upvote-hover.svg');
+});
+
+$ideaList.on('mouseleave', '.upvote-btn', function(){
+  $(this).children('img').attr('src', './imgs/upvote.svg');
+});
+
+$ideaList.on('mouseover', '.downvote-btn', function(){
+  $(this).children('img').attr('src', './imgs/downvote-hover.svg');
+});
+
+$ideaList.on('mouseleave', '.downvote-btn', function(){
+  $(this).children('img').attr('src', './imgs/downvote.svg');
+});
+
 function removeIdeaStorage(id) {
   localStorage.removeItem(id);
 }
