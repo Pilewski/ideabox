@@ -199,11 +199,29 @@ function removeIDfromArray(id) {
 
 $ideaList.on('click', '.upvote-btn', function(){
   var status = $(this).siblings('.idea-quality');
-  status.text(qualityUp(status.text()));
+  var newQuality = qualityUp(status.text());
+  status.text(newQuality);
+  var id = parseInt($(this).closest('li').attr("value"));
+  var editedIdea = retrieveIdea(id);
+
+  removeIdeaStorage(id);
+  removeIDfromArray(id);
+  editedIdea.quality = newQuality;
+  ideaToStorage(editedIdea);
 });
+
 $ideaList.on('click', '.downvote-btn', function(){
   var status = $(this).siblings('.idea-quality');
-  status.text(qualityDown(status.text()));
+  var newQuality =qualityDown(status.text());
+  status.text(newQuality);
+
+  var id = parseInt($(this).closest('li').attr("value"));
+  var editedIdea = retrieveIdea(id);
+
+  removeIdeaStorage(id);
+  removeIDfromArray(id);
+  editedIdea.quality = newQuality;
+  ideaToStorage(editedIdea);
 });
 
 function qualityUp(status) {
@@ -225,6 +243,7 @@ $ideaList.on('click', 'h2', function(){
   var text = $(this).text();
   $(this).replaceWith('<textarea class="titleField">'+text+'</textarea>');
 });
+
 $ideaList.on('click', 'p', function(){
   var text = $(this).text();
   $(this).replaceWith('<textarea class="bodyField">'+text+'</textarea>');
