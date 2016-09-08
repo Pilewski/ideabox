@@ -3,7 +3,7 @@ var $ideaTitleInput = $('#idea-title-input');
 var $ideaBodyInput = $('#idea-body-input');
 var $form = $('#input-form');
 var $ideaList = $('#idea-list');
-var $search = $('#search-input')
+var $search = $('#search-input');
 
 function Idea(id, title, body) {
   this.id = id;
@@ -111,10 +111,23 @@ $(window).load(function (){
 });
 
 
-$search.on('keypress', function(){
+$search.on('keyup', function(){
 
+  var searchString = getSearchString();
+  var IdeaIDArray = retrieveIDArray();
 
+  //clear list items
 
+  for (var i = 0; i < IdeaIDArray.length; i++) {
+    var existingIdea = retrieveIdea(IdeaIDArray[i]);
+
+    //check if search string is in title or body
+    if(!(existingIdea.title.includes(searchString)) && !(existingIdea.body.includes(searchString))){
+      console.log('blah');
+      $(this).siblings().children("[value="+existingIdea.id+"]").hide();
+    }
+
+  }
 });
 
 function getSearchString(){
@@ -122,8 +135,7 @@ function getSearchString(){
 }
 
 $ideaList.on('click', '.delete-btn', function(){
-  //$(this).closest('#idea-list').remove();
-  $(this).parent().parent().remove();
+  $(this).closest('li').remove();
   var id = $(this).closest('li').attr("value");
   removeIdeaStorage(id);
   removeIDfromArray(id);
