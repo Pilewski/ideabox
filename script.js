@@ -70,8 +70,7 @@ function updateIDArray(id) {
 }
 
 function retrieveIdea(id) {
-  var storedIdea = localStorage.getItem(id);
-  return JSON.parse(storedIdea);
+  return JSON.parse(localStorage.getItem(id));
 }
 
 function retrieveIDArray() {
