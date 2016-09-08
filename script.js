@@ -66,7 +66,7 @@ function pushNewID(id) {
 function updateIDArray(id) {
   var arrayIdeaIDs = retrieveIDarray();
   arrayIdeaIDs.push(id);
-  localStorage.setItem('ideaArray', JSON.stringify(arrayIdeaIDs));
+  localStorage.setItem('idArray', JSON.stringify(arrayIdeaIDs));
 }
 
 function retrieveIdea(id) {
@@ -75,7 +75,7 @@ function retrieveIdea(id) {
 }
 
 function retrieveIDarray() {
-  return JSON.parse(localStorage.getItem('ideaArray'));
+  return JSON.parse(localStorage.getItem('idArray'));
 }
 // on page load
 $(window).load(function (){
@@ -122,7 +122,7 @@ function removeIDfromArray(id) {
   var arrayIdeaIDs = retrieveIDarray();
   var index = arrayIdeaIDs.indexOf(id);
   arrayIdeaIDs.splice(index, 1);
-  localStorage.setItem('ideaArray', JSON.stringify(arrayIdeaIDs));
+  localStorage.setItem('idArray', JSON.stringify(arrayIdeaIDs));
 }
 
 $ideaList.on('click', '.upvote-btn', function(){
