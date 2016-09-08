@@ -3,6 +3,7 @@ var $ideaTitleInput = $('#idea-title-input');
 var $ideaBodyInput = $('#idea-body-input');
 var $form = $('#input-form');
 var $ideaList = $('#idea-list');
+var $search = $('#search-input')
 
 function Idea(id, title, body) {
   this.id = id;
@@ -22,6 +23,36 @@ function getUserTitle () {
 function getUserBody () {
   return $ideaBodyInput.val();
 }
+
+
+function ideaStringify(newIdea) {
+  return JSON.stringify(newIdea);
+}
+
+function ideaToStorage(newIdea) {
+  localStorage.setItem(newIdea.id, ideaStringify(newIdea));
+  addIdToArray(newIdea.id);
+}
+
+function addIdToArray(id) {
+  var IdeaIDArray = retrieveIDArray();
+
+  IdeaIDArray.push(id);
+  localStorage.setItem('idArray', JSON.stringify(IdeaIDArray));
+}
+
+function retrieveIdea(id) {
+  return JSON.parse(localStorage.getItem(id));
+}
+function retrieveIDArray() {
+
+  if (JSON.parse(localStorage.getItem('idArray')) === null){
+    return [];
+  } else{
+  return JSON.parse(localStorage.getItem('idArray'));
+  }
+}
+
 
 $form.submit( function(){
   event.preventDefault();
@@ -50,35 +81,9 @@ $form.submit( function(){
     return false;
 });
 
-function ideaStringify(newIdea) {
-  return JSON.stringify(newIdea);
-}
-
-function ideaToStorage(newIdea) {
-  localStorage.setItem(newIdea.id, ideaStringify(newIdea));
-  updateIDArray(newIdea.id);
-}
-
-function updateIDArray(id) {
-  var IdeaIDArray = retrieveIDArray();
-
-  if (IdeaIDArray === null){
-    IdeaIDArray = [];
-  }
-
-  IdeaIDArray.push(id);
-  localStorage.setItem('idArray', JSON.stringify(IdeaIDArray));
-}
-
-function retrieveIdea(id) {
-  return JSON.parse(localStorage.getItem(id));
-}
-function retrieveIDArray() {
-  return JSON.parse(localStorage.getItem('idArray'));
-}
-
 $(window).load(function (){
   var IdeaIDArray = retrieveIDArray();
+
   IdeaIDArray.sort();
     for (var i = 0; i < IdeaIDArray.length; i++) {
       var existingIdea = retrieveIdea(IdeaIDArray[i]);
@@ -105,10 +110,21 @@ $(window).load(function (){
    }
 });
 
+
+$search.on('keypress', function(){
+
+
+
+});
+
+function getSearchString(){
+  return $search.val();
+}
+
 $ideaList.on('click', '.delete-btn', function(){
   //$(this).closest('#idea-list').remove();
   $(this).parent().parent().remove();
-  var id = $(this).closest('#idea-list').attr("value");
+  var id = $(this).closest('li').attr("value");
   removeIdeaStorage(id);
   removeIDfromArray(id);
 });
