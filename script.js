@@ -64,7 +64,7 @@ function pushNewID(id) {
 }
 
 function updateIDArray(id) {
-  var arrayIdeaIDs = retrieveIDarray();
+  var arrayIdeaIDs = retrieveIDArray();
   arrayIdeaIDs.push(id);
   localStorage.setItem('idArray', JSON.stringify(arrayIdeaIDs));
 }
@@ -74,12 +74,12 @@ function retrieveIdea(id) {
   return JSON.parse(storedIdea);
 }
 
-function retrieveIDarray() {
+function retrieveIDArray() {
   return JSON.parse(localStorage.getItem('idArray'));
 }
 // on page load
 $(window).load(function (){
-  var arrayIdeaIDs = retrieveIDarray();
+  var arrayIdeaIDs = retrieveIDArray();
   arrayIdeaIDs.sort();
     for (var i = 0; i < arrayIdeaIDs.length; i++) {
       var existingIdea = retrieveIdea(arrayIdeaIDs[i]);
@@ -119,7 +119,7 @@ function removeIdeaStorage(id) {
 }
 
 function removeIDfromArray(id) {
-  var arrayIdeaIDs = retrieveIDarray();
+  var arrayIdeaIDs = retrieveIDArray();
   var index = arrayIdeaIDs.indexOf(id);
   arrayIdeaIDs.splice(index, 1);
   localStorage.setItem('idArray', JSON.stringify(arrayIdeaIDs));
