@@ -108,8 +108,8 @@ $(window).load(function (){
 });
 
 $ideaList.on('click', '.delete-btn', function(){
-  $(this).parent().parent().remove();
-  var id = $(this).parent().parent().attr("value");
+  $(this).closest('#idea-list').remove();
+  var id = $(this).closest('#idea-list').attr("value");
   removeIdeaStorage(id);
   removeIDfromArray(id);
 });
