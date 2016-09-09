@@ -8,12 +8,37 @@ var $search = $('#search-input');
 var $submit = $('#submit-button');
 var $ideaSection = $('#idea-section');
 
+var IdeaBox = {
+  ideas: [],
 
-function Idea(id, title, body, tags) {
-  this.id = id;
+  add: function(){
+    var newIdea = new Idea(getUserTitle(), getUserBody(), getTags());
+    ideas.push(newIdea);
+    this.store();
+    $ideaList.prepend(generateListHTML(newIdea));
+
+  },
+  remove: function(id){},
+  find: function(id){},
+  render: function(){},
+  search: function(){},
+  store: function(){
+    localStorage.setItem('ideas', ideaStringify(ideas));
+  },
+  retrieve: function(){
+    var ideasFromStorage = JSON.parse(localStorage.getItem('ideas'));
+    for (var i = 0; i < ideasFromStorage.length; i++){
+      ideas[i] = newIdea(ideasFromStorage[i].title, ideasFromStorage[i].body, ideasFromStorage[i].tags, ideasFromStorage[i].id, ideasFromStorage[i].quality);
+    }
+  },
+
+};
+
+function Idea(title, body, tags, id) {
   this.title = title;
   this.body = body;
   this.tags = tags;
+  this.id = Date.now();
   this.quality = 'swill';
 }
 
@@ -67,8 +92,8 @@ function addTagsToStorage(idea){
   localStorage.setItem('tagArray', JSON.stringify(tagArray));
 }
 
-function ideaStringify(newIdea) {
-  return JSON.stringify(newIdea);
+function ideaStringify(ideas) {
+  return JSON.stringify(ideas);
 }
 
 function ideaToStorage(newIdea) {
