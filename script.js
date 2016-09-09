@@ -180,6 +180,17 @@ $search.on('keyup', function(){
   showOrHideIdeas(searchString,ideaIDArray);
 });
 
+function showOrHideIdeasByTags(filterTag, ideaIDArray){
+  for (var i = 0; i < ideaIDArray.length; i++) {
+    var existingIdea = retrieveIdea(ideaIDArray[i]);
+
+    if($.inArray(filterTag, existingIdea.tags) > -1){
+      $search.siblings().children("[value="+existingIdea.id+"]").show();
+    } else {
+      $search.siblings().children("[value="+existingIdea.id+"]").hide();
+    }
+  }
+}
 
 $ideaList.on('click', '.delete-btn', function(){
   $(this).closest('li').remove();
