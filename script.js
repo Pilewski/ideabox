@@ -18,8 +18,17 @@ var IdeaBox = {
     $ideaList.prepend(generateListHTML(newIdea));
   },
   remove: function(id){
-
+    // var idea = find(id);
+    var index;
+    for (var i = 0; i < this.ideas.length; i++){
+      if(this.ideas[i].id === id){
+        index = i;
+      }
+    }
+    this.ideas.splice(index, 1);
+    this.store();
   },
+
   find: function(id){
     var ideas = this.retrieve();
     for (var i = 0; i < ideas.length; i++){
@@ -29,6 +38,7 @@ var IdeaBox = {
     }
   },
   render: function(){
+    $ideaList.html('');
     this.retrieve();
     for (var j = 0; j < this.ideas.length; j++){
       $ideaList.prepend(generateListHTML(this.ideas[j]));
@@ -239,10 +249,13 @@ function addTagButtonsToPage(){
 }
 
 $ideaList.on('click', '.delete-btn', function(){
-  $(this).closest('li').remove();
+  debugger;
   var id = $(this).closest('li').attr("value");
-  removeIdeaStorage(id);
-  removeIDfromArray(id);
+  $(this).closest('li').remove();
+  IdeaBox.remove(id);
+
+  // removeIdeaStorage(id);
+  // removeIDfromArray(id);
 });
 
 function replaceImage(target, imageURL){
