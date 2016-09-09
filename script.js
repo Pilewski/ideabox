@@ -89,7 +89,7 @@ $form.submit( function(){
         "<button type='button' class='upvote-btn'><img src='./imgs/upvote.svg'/></button>"+
         "<button type='button' class='downvote-btn'><img src='./imgs/downvote.svg' /></button>"+
         "<span>quality: </span>"+
-        "<article class='idea-quality'>"+
+        "<article class='idea-quality'> "+
           newIdea.quality+
         "</article>"+
       "</div>"+
@@ -119,7 +119,7 @@ $(window).load(function (){
             "<button type='button' class='upvote-btn'><img src='./imgs/upvote.svg'/></button>"+
             "<button type='button' class='downvote-btn'><img src='./imgs/downvote.svg' /></button>"+
             "<span>quality: </span>"+
-            "<article class='idea-quality'>"+
+            "<article class='idea-quality'> "+
              existingIdea.quality+
              "</article>"+
           "</div>"+

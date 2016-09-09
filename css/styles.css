@@ -76,6 +76,11 @@ h2 {
     margin-bottom: 15px;
     word-wrap: break-word;
 }
+#idea-section {
+  font-family: 'Open Sans', sans-serif;
+  color: #6D6E71;
+  font-size: 15px;
+}
 #idea-body-input, .bodyField, .titleField {
     border-width: 1px;
     border-style: solid;
@@ -108,16 +113,8 @@ h2 {
     width: 35px;
 }
 .idea-footer span {
-    color: #6D6E71;
-    font-family: 'Open Sans', sans-serif;
-    font-size: 15px;
-    margin-left: 10px;
+    margin-left: 1em;
 }
 .idea-quality {
-    color: #6D6E71;
-    font-family: 'Open Sans', sans-serif;
-    font-size: 15px;
-    display: inline-block;
-    margin-left: 5px;
-    align-items: center;
+    margin-left: .5em;
 }
