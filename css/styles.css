@@ -15,22 +15,19 @@ h1 {
     color: #6D6E71
 }
 form {
-    text-align: center;
     background-color: #E5F3F2;
     padding: 20px;
     margin-bottom: 25px;
 }
-input {
+input, textarea {
     border-width: 1px;
     border-style: solid;
     border-color: #D1d3d4;
     font-size: 15px;
     display: block;
-    margin: auto;
-    margin-top: 10px;
-    margin-bottom: 10px;
     width: 400px;
     height: 25px;
+    margin: 10px auto;
 }
 #submit-button {
     background-color: #00A79D;
@@ -158,4 +155,3 @@ h2 {
     margin-left: 5px;
     align-items: center;
 }
-textarea {}
