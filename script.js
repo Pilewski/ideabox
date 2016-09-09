@@ -6,6 +6,7 @@ var $form = $('#input-form');
 var $ideaList = $('#idea-list');
 var $search = $('#search-input');
 var $submit = $('#submit-button');
+var $ideaSection = $('#idea-section')
 
 
 function Idea(id, title, body, tags) {
@@ -72,9 +73,7 @@ function ideaStringify(newIdea) {
 
 function ideaToStorage(newIdea) {
   localStorage.setItem(newIdea.id, ideaStringify(newIdea));
-  //
   addTagsToStorage(newIdea);
-  //
   addIdToArray(newIdea.id);
 }
 
@@ -119,11 +118,27 @@ function generateListHTML(idea){
     "</li>";
 }
 
+function generateTagButtonHTML(tag){
+  return "<button class='tag-button'>"+tag+"</button>";
+}
+
+function populateTagsToPage(){
+  var tagArray = retrieveTagArray();
+  for (var i = 0; i < tagArray.length; i++) {
+    $ideaSection.prepend(generateTagButtonHTML(tagArray[i]));
+  }
+}
+
 $form.submit( function(){
   event.preventDefault();
   var newIdea = new Idea(newUniqueID(), getUserTitle(), getUserBody(), getTags());
   $ideaList.prepend(generateListHTML(newIdea));
   ideaToStorage(newIdea);
+
+  //add new tags to page
+  addTagsToStorage(newIdea);
+  populateTagsToPage();
+
   return false;
 });
 
@@ -134,7 +149,7 @@ $(document).ready(function (){
     for (var i = 0; i < IdeaIDArray.length; i++) {
       var existingIdea = retrieveIdea(IdeaIDArray[i]);
       $ideaList.prepend(generateListHTML(existingIdea));
-   }
+    }
 });
 
 $form.on('keyup', function(){
