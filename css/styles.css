@@ -31,20 +31,17 @@ input, textarea {
 }
 #submit-button {
     background-color: #00A79D;
-    border-style: none;
     color: #ffffff;
 }
 #submit-button:hover {
     cursor: pointer;
     background-color: #045E55;
     color: #ffffff;
-    border-style: none;
 }
 #submit-button:disabled {
     cursor: default;
     background-color: gray;
     color: white;
-    border-style: none;
 }
 ul {
     width: 400px;
@@ -55,10 +52,7 @@ li {
     margin-bottom: 10px;
 }
 .idea-header {
-    display: inline-block;
-    width: 100%;
-    align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 h2 {
     margin-top: 8px;
