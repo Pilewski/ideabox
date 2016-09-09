@@ -98,31 +98,33 @@ function retrieveIDArray() {
   }
 }
 
-$form.submit( function(){
-  event.preventDefault();
-  var newIdea = new Idea(newUniqueID(), getUserTitle(), getUserBody(), getTags());
-  $ideaList.prepend(
-    "<li value="+newIdea.id+">"+
+function generateListHTML(idea){
+  return   "<li value="+idea.id+">"+
       "<div class='idea-header'>"+
-        "<h2>"+newIdea.title+"</h2>"+
+        "<h2>"+idea.title+"</h2>"+
         "<button type='button' class='delete-btn'>"+
         "<img src='./imgs/delete.svg' /></button>"+
       "</div>"+
       "<div class='idea-body'>"+
-        "<p>"+newIdea.body+"</p>"+
+        "<p>"+idea.body+"</p>"+
       "</div>"+
       "<div class='idea-footer'>"+
         "<button type='button' class='upvote-btn'><img src='./imgs/upvote.svg'/></button>"+
         "<button type='button' class='downvote-btn'><img src='./imgs/downvote.svg' /></button>"+
         "<span>quality: </span>"+
         "<article class='idea-quality'>"+
-          newIdea.quality+
+          idea.quality+
         "</article>"+
       "</div>"+
-    "</li>"
-  );
-    ideaToStorage(newIdea);
-    return false;
+    "</li>";
+}
+
+$form.submit( function(){
+  event.preventDefault();
+  var newIdea = new Idea(newUniqueID(), getUserTitle(), getUserBody(), getTags());
+  $ideaList.prepend(generateListHTML(newIdea));
+  ideaToStorage(newIdea);
+  return false;
 });
 
 $(document).ready(function (){
@@ -131,26 +133,7 @@ $(document).ready(function (){
   IdeaIDArray.sort();
     for (var i = 0; i < IdeaIDArray.length; i++) {
       var existingIdea = retrieveIdea(IdeaIDArray[i]);
-      $ideaList.prepend(
-        "<li value="+existingIdea.id+">"+
-          "<div class='idea-header'>"+
-            "<h2>"+existingIdea.title+"</h2>"+
-            "<button type='button' class='delete-btn'>"+
-            "<img src='./imgs/delete.svg' /></button>"+
-          "</div>"+
-          "<div class='idea-body'>"+
-            "<p>"+existingIdea.body+"</p>"+
-          "</div>"+
-          "<div class='idea-footer'>"+
-            "<button type='button' class='upvote-btn'><img src='./imgs/upvote.svg'/></button>"+
-            "<button type='button' class='downvote-btn'><img src='./imgs/downvote.svg' /></button>"+
-            "<span>quality: </span>"+
-            "<article class='idea-quality'>"+
-             existingIdea.quality+
-             "</article>"+
-          "</div>"+
-        "</li>"
-     );
+      $ideaList.prepend(generateListHTML(existingIdea));
    }
 });
 
@@ -181,15 +164,27 @@ $search.on('keyup', function(){
 });
 
 function showOrHideIdeasByTags(filterTag, ideaIDArray){
-  for (var i = 0; i < ideaIDArray.length; i++) {
-    var existingIdea = retrieveIdea(ideaIDArray[i]);
+  if(filterTag !==''){
+    for (var i = 0; i < ideaIDArray.length; i++) {
+      var existingIdea = retrieveIdea(ideaIDArray[i]);
 
-    if($.inArray(filterTag, existingIdea.tags) > -1){
-      $search.siblings().children("[value="+existingIdea.id+"]").show();
-    } else {
-      $search.siblings().children("[value="+existingIdea.id+"]").hide();
+      if($.inArray(filterTag, existingIdea.tags) > -1){
+        $search.siblings().children("[value="+existingIdea.id+"]").show();
+      } else {
+        $search.siblings().children("[value="+existingIdea.id+"]").hide();
+      }
     }
   }
+  else{
+    for (var j = 0; j < ideaIDArray.length; j++) {
+      var existingIdea2 = retrieveIdea(ideaIDArray[j]);
+      $search.siblings().children("[value="+existingIdea2.id+"]").show();
+    }
+    }
+}
+
+function addTagButtonsToPage(){
+
 }
 
 $ideaList.on('click', '.delete-btn', function(){
