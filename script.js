@@ -20,7 +20,7 @@ var IdeaBox = {
   remove: function(id){
     var index;
     for (var i = 0; i < this.ideas.length; i++){
-      if(this.ideas[i].id === id){
+      if(this.ideas[i].id === parseInt(id)){
         index = i;
       }
     }
@@ -298,24 +298,6 @@ $ideaList.on('mouseleave', '.downvote-btn', function(){
 
 function removeIdeaStorage(id) {
   localStorage.removeItem(id);
-}
-
-function removeIDfromArray(id) {
-  var IdeaIDArray = retrieveIDArray();
-  var index = IdeaIDArray.indexOf(id);
-  IdeaIDArray.splice(index, 1);
-  localStorage.setItem('idArray', JSON.stringify(IdeaIDArray));
-}
-
-function saveQuality(target, newQuality){
-
-  var id = parseInt(target.closest('li').attr("value"));
-  var editedIdea = retrieveIdea(id);
-
-  removeIdeaStorage(id);
-  removeIDfromArray(id);
-  editedIdea.quality = newQuality;
-  ideaToStorage(editedIdea);
 }
 
 $ideaList.on('click', '.upvote-btn', function(){
