@@ -17,8 +17,17 @@ var IdeaBox = {
     this.store();
     $ideaList.prepend(generateListHTML(newIdea));
   },
-  remove: function(id){},
-  find: function(id){},
+  remove: function(id){
+
+  },
+  find: function(id){
+    var ideas = this.retrieve();
+    for (var i = 0; i < ideas.length; i++){
+      if(ideas[i].id === id){
+        return ideas[i];
+      }
+    }
+  },
   render: function(){
     this.retrieve();
     for (var j = 0; j < this.ideas.length; j++){
@@ -34,17 +43,27 @@ var IdeaBox = {
     for (var i = 0; i < ideasFromStorage.length; i++){
       this.ideas[i] = new Idea(ideasFromStorage[i].title, ideasFromStorage[i].body, ideasFromStorage[i].tags, ideasFromStorage[i].id, ideasFromStorage[i].quality);
     }
+    return this.ideas;
   },
-
 };
 
-function Idea(title, body, tags, id) {
+function Idea(title, body, tags, id, quality) {
   this.title = title;
   this.body = body;
   this.tags = tags;
-  this.id = Date.now();
-  this.quality = 'swill';
+  this.id = id || Date.now();
+  this.quality = quality || 'swill';
 }
+
+Idea.prototype.upvote = function(){
+  this.quality = qualityUp(this.quality);
+};
+
+Idea.prototype.downvote = function(){
+ this.quality = qualityDown(this.quality);
+};
+
+
 
 function checkIdeaFieldsEmpty(){
   if ($ideaTitleInput.val()==='' || $ideaBodyInput.val()===''){
@@ -280,6 +299,9 @@ $ideaList.on('click', '.upvote-btn', function(){
   var status = $(this).siblings('.idea-quality');
   var newQuality = qualityUp(status.text());
   status.text(newQuality);
+
+  var id = parseInt(target.closest('li').attr("value"));
+  
 
   saveQuality($(this), newQuality);
 });
