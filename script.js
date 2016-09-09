@@ -1,17 +1,44 @@
 
 var $ideaTitleInput = $('#idea-title-input');
 var $ideaBodyInput = $('#idea-body-input');
+var $ideaTagInput = $('#idea-tag-input');
 var $form = $('#input-form');
 var $ideaList = $('#idea-list');
 var $search = $('#search-input');
 var $submit = $('#submit-button');
+var $ideaSection = $('#idea-section');
 
+var IdeaBox = {
+  ideas: [],
 
+  add: function(){
+    var newIdea = new Idea(getUserTitle(), getUserBody(), getTags());
+    ideas.push(newIdea);
+    this.store();
+    $ideaList.prepend(generateListHTML(newIdea));
 
-function Idea(id, title, body) {
-  this.id = id;
+  },
+  remove: function(id){},
+  find: function(id){},
+  render: function(){},
+  search: function(){},
+  store: function(){
+    localStorage.setItem('ideas', ideaStringify(ideas));
+  },
+  retrieve: function(){
+    var ideasFromStorage = JSON.parse(localStorage.getItem('ideas'));
+    for (var i = 0; i < ideasFromStorage.length; i++){
+      ideas[i] = newIdea(ideasFromStorage[i].title, ideasFromStorage[i].body, ideasFromStorage[i].tags, ideasFromStorage[i].id, ideasFromStorage[i].quality);
+    }
+  },
+
+};
+
+function Idea(title, body, tags, id) {
   this.title = title;
   this.body = body;
+  this.tags = tags;
+  this.id = Date.now();
   this.quality = 'swill';
 }
 
@@ -42,13 +69,36 @@ function getUserBody () {
   return $ideaBodyInput.val();
 }
 
+function getTags(){
+  return $ideaTagInput.val().split(',');
+}
 
-function ideaStringify(newIdea) {
-  return JSON.stringify(newIdea);
+function retrieveTagArray(){
+  if (JSON.parse(localStorage.getItem('tagArray')) === null){
+    return [];
+  } else{
+    return JSON.parse(localStorage.getItem('tagArray'));
+  }
+}
+
+function addTagsToStorage(idea){
+  var tagArray = retrieveTagArray();
+
+  for (var i = 0; i < idea.tags.length; i++){
+  if ( $.inArray(idea.tags[i], tagArray) === -1 ) {
+      tagArray.push(idea.tags[i]);
+    }
+  }
+  localStorage.setItem('tagArray', JSON.stringify(tagArray));
+}
+
+function ideaStringify(ideas) {
+  return JSON.stringify(ideas);
 }
 
 function ideaToStorage(newIdea) {
   localStorage.setItem(newIdea.id, ideaStringify(newIdea));
+  addTagsToStorage(newIdea);
   addIdToArray(newIdea.id);
 }
 
@@ -72,60 +122,60 @@ function retrieveIDArray() {
   }
 }
 
-$form.submit( function(){
-  event.preventDefault();
-  var newIdea = new Idea(newUniqueID(), getUserTitle(), getUserBody());
-  $ideaList.prepend(
-    "<li value="+newIdea.id+">"+
+function generateListHTML(idea){
+  return   "<li value="+idea.id+">"+
       "<div class='idea-header'>"+
-        "<h2>"+newIdea.title+"</h2>"+
+        "<h2>"+idea.title+"</h2>"+
         "<button type='button' class='delete-btn'>"+
         "<img src='./imgs/delete.svg' /></button>"+
       "</div>"+
       "<div class='idea-body'>"+
-        "<p>"+newIdea.body+"</p>"+
+        "<p>"+idea.body+"</p>"+
       "</div>"+
       "<div class='idea-footer'>"+
         "<button type='button' class='upvote-btn'><img src='./imgs/upvote.svg'/></button>"+
         "<button type='button' class='downvote-btn'><img src='./imgs/downvote.svg' /></button>"+
         "<span>quality: </span>"+
-        "<article class='idea-quality'> "+
-          newIdea.quality+
+        "<article class='idea-quality'>"+
+          idea.quality+
         "</article>"+
       "</div>"+
-    "</li>"
-  );
-    ideaToStorage(newIdea);
-    return false;
+    "</li>";
+}
+
+function generateTagButtonHTML(tag){
+  return "<button class='tag-button'>"+tag+"</button>";
+}
+
+function populateTagsToPage(){
+  var tagArray = retrieveTagArray();
+  for (var i = 0; i < tagArray.length; i++) {
+    $ideaSection.prepend(generateTagButtonHTML(tagArray[i]));
+  }
+}
+
+$form.submit( function(){
+  event.preventDefault();
+  var newIdea = new Idea(newUniqueID(), getUserTitle(), getUserBody(), getTags());
+  $ideaList.prepend(generateListHTML(newIdea));
+  ideaToStorage(newIdea);
+
+  //add new tags to page
+  addTagsToStorage(newIdea);
+  $ideaSection.children('.tag-button').remove();
+  populateTagsToPage();
+
+  return false;
 });
 
-$(window).load(function (){
+$(document).ready(function (){
   toggleSubmitDisable();
   var IdeaIDArray = retrieveIDArray();
   IdeaIDArray.sort();
     for (var i = 0; i < IdeaIDArray.length; i++) {
       var existingIdea = retrieveIdea(IdeaIDArray[i]);
-      $ideaList.prepend(
-        "<li value="+existingIdea.id+">"+
-          "<div class='idea-header'>"+
-            "<h2>"+existingIdea.title+"</h2>"+
-            "<button type='button' class='delete-btn'>"+
-            "<img src='./imgs/delete.svg' /></button>"+
-          "</div>"+
-          "<div class='idea-body'>"+
-            "<p>"+existingIdea.body+"</p>"+
-          "</div>"+
-          "<div class='idea-footer'>"+
-            "<button type='button' class='upvote-btn'><img src='./imgs/upvote.svg'/></button>"+
-            "<button type='button' class='downvote-btn'><img src='./imgs/downvote.svg' /></button>"+
-            "<span>quality: </span>"+
-            "<article class='idea-quality'> "+
-             existingIdea.quality+
-             "</article>"+
-          "</div>"+
-        "</li>"
-     );
-   }
+      $ideaList.prepend(generateListHTML(existingIdea));
+    }
 });
 
 $form.on('keyup', function(){
@@ -154,6 +204,29 @@ $search.on('keyup', function(){
   showOrHideIdeas(searchString,ideaIDArray);
 });
 
+function showOrHideIdeasByTags(filterTags, ideaIDArray){
+  if(filterTags.length !==0){
+    for (var i = 0; i < ideaIDArray.length; i++) {
+      var existingIdea = retrieveIdea(ideaIDArray[i]);
+
+      if(_.intersection(filterTags, existingIdea.tags).length > 0){
+        $search.siblings().children("[value="+existingIdea.id+"]").show();
+      } else {
+        $search.siblings().children("[value="+existingIdea.id+"]").hide();
+      }
+    }
+  }
+  else{
+    for (var j = 0; j < ideaIDArray.length; j++) {
+      var existingIdea2 = retrieveIdea(ideaIDArray[j]);
+      $search.siblings().children("[value="+existingIdea2.id+"]").show();
+    }
+    }
+}
+
+function addTagButtonsToPage(){
+
+}
 
 $ideaList.on('click', '.delete-btn', function(){
   $(this).closest('li').remove();
@@ -162,28 +235,32 @@ $ideaList.on('click', '.delete-btn', function(){
   removeIDfromArray(id);
 });
 
+function replaceImage(target, imageURL){
+  target.children('img').attr('src', imageURL);
+}
+
 $ideaList.on('mouseover', '.delete-btn', function(){
-  $(this).children('img').attr('src', './imgs/delete-hover.svg');
+  replaceImage($(this),'./imgs/delete-hover.svg');
 });
 
 $ideaList.on('mouseleave', '.delete-btn', function(){
-  $(this).children('img').attr('src', './imgs/delete.svg');
+  replaceImage($(this),'./imgs/delete.svg');
 });
 
 $ideaList.on('mouseover', '.upvote-btn', function(){
-  $(this).children('img').attr('src', './imgs/upvote-hover.svg');
+  replaceImage($(this),'./imgs/upvote-hover.svg');
 });
 
 $ideaList.on('mouseleave', '.upvote-btn', function(){
-  $(this).children('img').attr('src', './imgs/upvote.svg');
+  replaceImage($(this), './imgs/upvote.svg');
 });
 
 $ideaList.on('mouseover', '.downvote-btn', function(){
-  $(this).children('img').attr('src', './imgs/downvote-hover.svg');
+  replaceImage($(this), './imgs/downvote-hover.svg');
 });
 
 $ideaList.on('mouseleave', '.downvote-btn', function(){
-  $(this).children('img').attr('src', './imgs/downvote.svg');
+  replaceImage($(this), './imgs/downvote.svg');
 });
 
 function removeIdeaStorage(id) {
@@ -197,17 +274,23 @@ function removeIDfromArray(id) {
   localStorage.setItem('idArray', JSON.stringify(IdeaIDArray));
 }
 
-$ideaList.on('click', '.upvote-btn', function(){
-  var status = $(this).siblings('.idea-quality');
-  var newQuality = qualityUp(status.text());
-  status.text(newQuality);
-  var id = parseInt($(this).closest('li').attr("value"));
+function saveQuality(target, newQuality){
+
+  var id = parseInt(target.closest('li').attr("value"));
   var editedIdea = retrieveIdea(id);
 
   removeIdeaStorage(id);
   removeIDfromArray(id);
   editedIdea.quality = newQuality;
   ideaToStorage(editedIdea);
+}
+
+$ideaList.on('click', '.upvote-btn', function(){
+  var status = $(this).siblings('.idea-quality');
+  var newQuality = qualityUp(status.text());
+  status.text(newQuality);
+
+  saveQuality($(this), newQuality);
 });
 
 $ideaList.on('click', '.downvote-btn', function(){
@@ -215,13 +298,7 @@ $ideaList.on('click', '.downvote-btn', function(){
   var newQuality =qualityDown(status.text());
   status.text(newQuality);
 
-  var id = parseInt($(this).closest('li').attr("value"));
-  var editedIdea = retrieveIdea(id);
-
-  removeIdeaStorage(id);
-  removeIDfromArray(id);
-  editedIdea.quality = newQuality;
-  ideaToStorage(editedIdea);
+  saveQuality($(this), newQuality);
 });
 
 function qualityUp(status) {
@@ -249,21 +326,23 @@ $ideaList.on('click', 'p', function(){
   $(this).replaceWith('<textarea class="bodyField">'+text+'</textarea>');
 });
 
+function storeEditedIdea(target, property, text){
+  var id = parseInt(target.closest('li').attr("value"));
+  var editedIdea = retrieveIdea(id);
+
+  removeIdeaStorage(id);
+  removeIDfromArray(id);
+  editedIdea[property] = text;
+  ideaToStorage(editedIdea);
+}
+
 $ideaList.on('blur', '.titleField', function(){
   var text = $(this).val();
 
   if(text===''){
     text = 'Title';
   }
-
-  var id = parseInt($(this).closest('li').attr("value"));
-  var editedIdea = retrieveIdea(id);
-
-  removeIdeaStorage(id);
-  removeIDfromArray(id);
-  editedIdea.title = text;
-  ideaToStorage(editedIdea);
-
+  storeEditedIdea($(this), 'title', text);
   $(this).replaceWith('<h2>'+text+'</h2>');
 });
 
@@ -273,14 +352,7 @@ $ideaList.on('blur', '.bodyField', function(){
   if(text===''){
     text = 'Body';
   }
-  var id = parseInt($(this).closest('li').attr("value"));
-  var editedIdea = retrieveIdea(id);
-
-  removeIdeaStorage(id);
-  removeIDfromArray(id);
-  editedIdea.body = text;
-  ideaToStorage(editedIdea);
-
+  storeEditedIdea($(this), 'body', text);
   $(this).replaceWith('<p>'+text+'</p>');
 });
 
