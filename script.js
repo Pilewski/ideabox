@@ -18,7 +18,6 @@ var IdeaBox = {
     $ideaList.prepend(generateListHTML(newIdea));
   },
   remove: function(id){
-    // var idea = find(id);
     var index;
     for (var i = 0; i < this.ideas.length; i++){
       if(this.ideas[i].id === id){
@@ -28,7 +27,6 @@ var IdeaBox = {
     this.ideas.splice(index, 1);
     this.store();
   },
-
   find: function(id){
     var ideas = this.retrieve();
     for (var i = 0; i < ideas.length; i++){
@@ -83,6 +81,15 @@ Idea.prototype.upvote = function(){
 Idea.prototype.downvote = function(){
  this.quality = qualityDown(this.quality);
 };
+
+Idea.prototype.changeTitle = function(text){
+  this.title = text;
+};
+
+Idea.prototype.changeBody = function(text){
+  this.body = text;
+};
+
 
 
 function checkIdeaFieldsEmpty(){
@@ -166,12 +173,12 @@ function retrieveIDArray() {
 function generateListHTML(idea){
   return   "<li value="+idea.id+">"+
       "<div class='idea-header'>"+
-        "<h2>"+idea.title+"</h2>"+
+        "<h2 class='title-field'>"+idea.title+"</h2>"+
         "<button type='button' class='delete-btn'>"+
         "<img src='./imgs/delete.svg' /></button>"+
       "</div>"+
       "<div class='idea-body'>"+
-        "<p>"+idea.body+"</p>"+
+        "<p class='body-field'>"+idea.body+"</p>"+
       "</div>"+
       "<div class='idea-footer'>"+
         "<button type='button' class='upvote-btn'><img src='./imgs/upvote.svg'/></button>"+
@@ -259,9 +266,6 @@ $ideaList.on('click', '.delete-btn', function(){
   var id = $(this).closest('li').attr("value");
   $(this).closest('li').remove();
   IdeaBox.remove(id);
-
-  // removeIdeaStorage(id);
-  // removeIDfromArray(id);
 });
 
 function replaceImage(target, imageURL){
@@ -345,41 +349,37 @@ function qualityDown(status) {
 
 $ideaList.on('click', 'h2', function(){
   var text = $(this).text();
-  $(this).replaceWith('<textarea class="titleField">'+text+'</textarea>');
+  $(this).replaceWith('<textarea class="title-field">'+text+'</textarea>');
 });
 
 $ideaList.on('click', 'p', function(){
   var text = $(this).text();
-  $(this).replaceWith('<textarea class="bodyField">'+text+'</textarea>');
+  $(this).replaceWith('<textarea class="body-field">'+text+'</textarea>');
 });
 
-function storeEditedIdea(target, property, text){
-  var id = parseInt(target.closest('li').attr("value"));
-  var editedIdea = retrieveIdea(id);
-
-  removeIdeaStorage(id);
-  removeIDfromArray(id);
-  editedIdea[property] = text;
-  ideaToStorage(editedIdea);
-}
-
-$ideaList.on('blur', '.titleField', function(){
+$ideaList.on('blur','.title-field', function(){
+  var id = parseInt($(this).closest('li').attr("value"));
   var text = $(this).val();
 
   if(text===''){
     text = 'Title';
   }
-  storeEditedIdea($(this), 'title', text);
+  IdeaBox.find(id).changeTitle(text);
+  IdeaBox.store();
+
   $(this).replaceWith('<h2>'+text+'</h2>');
 });
 
-$ideaList.on('blur', '.bodyField', function(){
+$ideaList.on('blur','.body-field', function(){
+  var id = parseInt($(this).closest('li').attr("value"));
   var text = $(this).val();
 
   if(text===''){
     text = 'Body';
   }
-  storeEditedIdea($(this), 'body', text);
+  IdeaBox.find(id).changeBody(text);
+  IdeaBox.store();
+
   $(this).replaceWith('<p>'+text+'</p>');
 });
 
