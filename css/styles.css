@@ -76,7 +76,7 @@ h2 {
     margin-bottom: 15px;
     word-wrap: break-word;
 }
-#idea-body-input {
+#idea-body-input, .bodyField, .titleField {
     border-width: 1px;
     border-style: solid;
     border-color: #D1d3d4;
@@ -87,19 +87,10 @@ h2 {
     resize: none;
     text-align: left;
 }
-.bodyField, .titleField {
-    border-width: 1px;
-    border-style: solid;
-    border-color: #D1d3d4;
-    font-size: 15px;
-    font-family: 'Open Sans', sans-serif;
+.bodyField {
     height: 4em;
-    width: 400px;
-    resize: none;
-    text-align: left;
 }
 .titleField {
-    height: 1.5em;
     width: 300px;
 }
 .idea-footer {
@@ -107,16 +98,7 @@ h2 {
     align-items: center;
     margin-bottom: 15px;
 }
-.upvote-btn {
-    display: inline-block;
-    outline: none;
-    cursor: pointer;
-    background: none;
-    border: none;
-    height: 35px;
-    width: 35px;
-}
-.downvote-btn {
+.upvote-btn, .downvote-btn {
     display: inline-block;
     outline: none;
     cursor: pointer;
