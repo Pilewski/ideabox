@@ -296,22 +296,17 @@ function saveQuality(target, newQuality){
 }
 
 $ideaList.on('click', '.upvote-btn', function(){
-  var status = $(this).siblings('.idea-quality');
-  var newQuality = qualityUp(status.text());
-  status.text(newQuality);
-
-  var id = parseInt(target.closest('li').attr("value"));
-  
-
-  saveQuality($(this), newQuality);
+  var id = parseInt($(this).closest('li').attr("value"));
+  IdeaBox.find(id).upvote();
+  IdeaBox.store();
+  IdeaBox.render();
 });
 
 $ideaList.on('click', '.downvote-btn', function(){
-  var status = $(this).siblings('.idea-quality');
-  var newQuality =qualityDown(status.text());
-  status.text(newQuality);
-
-  saveQuality($(this), newQuality);
+  var id = parseInt($(this).closest('li').attr("value"));
+  IdeaBox.find(id).downvote();
+  IdeaBox.store();
+  IdeaBox.render();
 });
 
 function qualityUp(status) {
