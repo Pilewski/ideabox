@@ -6,7 +6,7 @@ var $form = $('#input-form');
 var $ideaList = $('#idea-list');
 var $search = $('#search-input');
 var $submit = $('#submit-button');
-var $ideaSection = $('#idea-section')
+var $ideaSection = $('#idea-section');
 
 
 function Idea(id, title, body, tags) {
@@ -137,6 +137,7 @@ $form.submit( function(){
 
   //add new tags to page
   addTagsToStorage(newIdea);
+  $ideaSection.children('.tag-button').remove();
   populateTagsToPage();
 
   return false;
@@ -178,12 +179,12 @@ $search.on('keyup', function(){
   showOrHideIdeas(searchString,ideaIDArray);
 });
 
-function showOrHideIdeasByTags(filterTag, ideaIDArray){
-  if(filterTag !==''){
+function showOrHideIdeasByTags(filterTags, ideaIDArray){
+  if(filterTags.length !==0){
     for (var i = 0; i < ideaIDArray.length; i++) {
       var existingIdea = retrieveIdea(ideaIDArray[i]);
 
-      if($.inArray(filterTag, existingIdea.tags) > -1){
+      if(_.intersection(filterTags, existingIdea.tags).length > 0){
         $search.siblings().children("[value="+existingIdea.id+"]").show();
       } else {
         $search.siblings().children("[value="+existingIdea.id+"]").hide();
