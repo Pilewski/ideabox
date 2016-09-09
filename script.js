@@ -7,8 +7,7 @@ var $search = $('#search-input');
 var $submit = $('#submit-button');
 
 
-
-function Idea(id, title, body) {
+function Idea(id, title, body, tags) {
   this.id = id;
   this.title = title;
   this.body = body;
