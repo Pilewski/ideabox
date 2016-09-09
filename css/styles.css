@@ -87,7 +87,7 @@ h2 {
     resize: none;
     text-align: left;
 }
-.bodyField {
+.bodyField, .titleField {
     border-width: 1px;
     border-style: solid;
     border-color: #D1d3d4;
@@ -99,15 +99,8 @@ h2 {
     text-align: left;
 }
 .titleField {
-    border-width: 1px;
-    border-style: solid;
-    border-color: #D1d3d4;
-    font-size: 15px;
-    font-family: 'Open Sans', sans-serif;
     height: 1.5em;
     width: 300px;
-    resize: none;
-    text-align: left;
 }
 .idea-footer {
     display: flex;
