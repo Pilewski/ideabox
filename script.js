@@ -1,6 +1,7 @@
 
 var $ideaTitleInput = $('#idea-title-input');
 var $ideaBodyInput = $('#idea-body-input');
+var $ideaTagInput = $('#idea-tag-input');
 var $form = $('#input-form');
 var $ideaList = $('#idea-list');
 var $search = $('#search-input');
@@ -11,6 +12,7 @@ function Idea(id, title, body, tags) {
   this.id = id;
   this.title = title;
   this.body = body;
+  this.tags = tags;
   this.quality = 'swill';
 }
 
@@ -41,6 +43,28 @@ function getUserBody () {
   return $ideaBodyInput.val();
 }
 
+function getTags(){
+  return $ideaTagInput.val().split(',');
+}
+
+function retrieveTagArray(){
+  if (JSON.parse(localStorage.getItem('tagArray')) === null){
+    return [];
+  } else{
+    return JSON.parse(localStorage.getItem('tagArray'));
+  }
+}
+
+function addTagsToStorage(idea){
+  var tagArray = retrieveTagArray();
+
+  for (var i = 0; i < idea.tags.length; i++){
+  if ( $.inArray(idea.tags[i], tagArray) === -1 ) {
+      tagArray.push(idea.tags[i]);
+    }
+  }
+  localStorage.setItem('tagArray', JSON.stringify(tagArray));
+}
 
 function ideaStringify(newIdea) {
   return JSON.stringify(newIdea);
@@ -48,6 +72,9 @@ function ideaStringify(newIdea) {
 
 function ideaToStorage(newIdea) {
   localStorage.setItem(newIdea.id, ideaStringify(newIdea));
+  //
+  addTagsToStorage(newIdea);
+  //
   addIdToArray(newIdea.id);
 }
 
@@ -73,7 +100,7 @@ function retrieveIDArray() {
 
 $form.submit( function(){
   event.preventDefault();
-  var newIdea = new Idea(newUniqueID(), getUserTitle(), getUserBody());
+  var newIdea = new Idea(newUniqueID(), getUserTitle(), getUserBody(), getTags());
   $ideaList.prepend(
     "<li value="+newIdea.id+">"+
       "<div class='idea-header'>"+
