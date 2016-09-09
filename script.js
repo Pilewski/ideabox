@@ -13,22 +13,26 @@ var IdeaBox = {
 
   add: function(){
     var newIdea = new Idea(getUserTitle(), getUserBody(), getTags());
-    ideas.push(newIdea);
+    this.ideas.push(newIdea);
     this.store();
     $ideaList.prepend(generateListHTML(newIdea));
-
   },
   remove: function(id){},
   find: function(id){},
-  render: function(){},
+  render: function(){
+    this.retrieve();
+    for (var j = 0; j < this.ideas.length; j++){
+      $ideaList.prepend(generateListHTML(this.ideas[j]));
+    }
+  },
   search: function(){},
   store: function(){
-    localStorage.setItem('ideas', ideaStringify(ideas));
+    localStorage.setItem('ideas', ideaStringify(this.ideas));
   },
   retrieve: function(){
     var ideasFromStorage = JSON.parse(localStorage.getItem('ideas'));
     for (var i = 0; i < ideasFromStorage.length; i++){
-      ideas[i] = newIdea(ideasFromStorage[i].title, ideasFromStorage[i].body, ideasFromStorage[i].tags, ideasFromStorage[i].id, ideasFromStorage[i].quality);
+      this.ideas[i] = new Idea(ideasFromStorage[i].title, ideasFromStorage[i].body, ideasFromStorage[i].tags, ideasFromStorage[i].id, ideasFromStorage[i].quality);
     }
   },
 
@@ -156,26 +160,13 @@ function populateTagsToPage(){
 
 $form.submit( function(){
   event.preventDefault();
-  var newIdea = new Idea(newUniqueID(), getUserTitle(), getUserBody(), getTags());
-  $ideaList.prepend(generateListHTML(newIdea));
-  ideaToStorage(newIdea);
-
-  //add new tags to page
-  addTagsToStorage(newIdea);
-  $ideaSection.children('.tag-button').remove();
-  populateTagsToPage();
-
+  IdeaBox.add();
   return false;
 });
 
 $(document).ready(function (){
   toggleSubmitDisable();
-  var IdeaIDArray = retrieveIDArray();
-  IdeaIDArray.sort();
-    for (var i = 0; i < IdeaIDArray.length; i++) {
-      var existingIdea = retrieveIdea(IdeaIDArray[i]);
-      $ideaList.prepend(generateListHTML(existingIdea));
-    }
+  IdeaBox.render();
 });
 
 $form.on('keyup', function(){
