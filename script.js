@@ -99,7 +99,7 @@ $form.submit( function(){
     return false;
 });
 
-$(window).load(function (){
+$(document).ready(function (){
   toggleSubmitDisable();
   var IdeaIDArray = retrieveIDArray();
   IdeaIDArray.sort();
@@ -253,21 +253,23 @@ $ideaList.on('click', 'p', function(){
   $(this).replaceWith('<textarea class="bodyField">'+text+'</textarea>');
 });
 
+function storeEditedIdea(target, property, text){
+  var id = parseInt(target.closest('li').attr("value"));
+  var editedIdea = retrieveIdea(id);
+
+  removeIdeaStorage(id);
+  removeIDfromArray(id);
+  editedIdea[property] = text;
+  ideaToStorage(editedIdea);
+}
+
 $ideaList.on('blur', '.titleField', function(){
   var text = $(this).val();
 
   if(text===''){
     text = 'Title';
   }
-
-  var id = parseInt($(this).closest('li').attr("value"));
-  var editedIdea = retrieveIdea(id);
-
-  removeIdeaStorage(id);
-  removeIDfromArray(id);
-  editedIdea.title = text;
-  ideaToStorage(editedIdea);
-
+  storeEditedIdea($(this), 'title', text);
   $(this).replaceWith('<h2>'+text+'</h2>');
 });
 
@@ -277,14 +279,7 @@ $ideaList.on('blur', '.bodyField', function(){
   if(text===''){
     text = 'Body';
   }
-  var id = parseInt($(this).closest('li').attr("value"));
-  var editedIdea = retrieveIdea(id);
-
-  removeIdeaStorage(id);
-  removeIDfromArray(id);
-  editedIdea.body = text;
-  ideaToStorage(editedIdea);
-
+  storeEditedIdea($(this), 'body', text);
   $(this).replaceWith('<p>'+text+'</p>');
 });
 
