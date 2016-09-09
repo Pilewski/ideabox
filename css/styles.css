@@ -52,25 +52,22 @@ li {
     margin-bottom: 10px;
 }
 .idea-header {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 h2 {
-    margin-top: 8px;
-    font-size: 23px;
+    font-size: 25px;
     color: #6D6E71;
     display: inline-block;
     font-family: 'Roboto Slab', serif;
 }
 .delete-btn {
-    display: inline-block;
+    display: inline;
     cursor: pointer;
     float: right;
     background: none;
     border: none;
     height: 35px;
     width: 35px;
-}
-.delete-btn:focus {
     outline: none;
 }
 .idea-body {
