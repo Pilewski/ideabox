@@ -44,7 +44,18 @@ var IdeaBox = {
       $ideaList.prepend(generateListHTML(this.ideas[j]));
     }
   },
-  search: function(){},
+
+  showOrHideIdeas: function(searchString){
+    for (var i = 0; i < this.ideas.length; i++) {
+      var existingIdea = this.ideas[i];
+
+      if(!(this.ideas[i].title.includes(searchString)) && !(this.ideas[i].body.includes(searchString))){
+          $search.siblings().children("[value="+this.ideas[i].id+"]").hide();
+      } else {
+          $search.siblings().children("[value="+this.ideas[i].id+"]").show();
+      }
+    }
+  },
   store: function(){
     localStorage.setItem('ideas', ideaStringify(this.ideas));
   },
@@ -74,7 +85,6 @@ Idea.prototype.downvote = function(){
 };
 
 
-
 function checkIdeaFieldsEmpty(){
   if ($ideaTitleInput.val()==='' || $ideaBodyInput.val()===''){
     return true;
@@ -90,9 +100,7 @@ function toggleSubmitDisable(){
     $submit.attr('disabled', false);
   }
 }
-function newUniqueID () {
-  return Date.now();
-}
+
 
 function getUserTitle () {
   return $ideaTitleInput.val();
@@ -220,8 +228,7 @@ function showOrHideIdeas(searchString, ideaIDArray){
 
 $search.on('keyup', function(){
   var searchString = getSearchString();
-  var ideaIDArray = retrieveIDArray();
-  showOrHideIdeas(searchString,ideaIDArray);
+  IdeaBox.showOrHideIdeas(searchString);
 });
 
 function showOrHideIdeasByTags(filterTags, ideaIDArray){
@@ -249,7 +256,6 @@ function addTagButtonsToPage(){
 }
 
 $ideaList.on('click', '.delete-btn', function(){
-  debugger;
   var id = $(this).closest('li').attr("value");
   $(this).closest('li').remove();
   IdeaBox.remove(id);
