@@ -8,6 +8,7 @@ var $search = $('#search-input');
 var $submit = $('#submit-button');
 var $ideaSection = $('#idea-section');
 var $tagButtons = $('#tag-buttons');
+var $sortByQuality = $('#sort-by-quality');
 
 var IdeaBox = {
 
@@ -155,8 +156,11 @@ var IdeaBox = {
       }
     }
     this.ideas = sortedIdeas;
-    this.store();
-    this.render();
+
+    $ideaList.html('');
+    for (var k = 0; k < this.ideas.length; k++){
+      $ideaList.prepend(generateListHTML(this.ideas[k]));
+    }
   }
 };
 
@@ -286,6 +290,19 @@ $tagButtons.on('click', '.tag-button', function(){
   IdeaBox.showOrHideIdeasByTags();
 });
 
+
+var sortDirection = 'descending';
+
+$sortByQuality.on('click', function(){
+
+  IdeaBox.sortByQuality(sortDirection);
+  if(sortDirection === 'descending'){
+    sortDirection = 'ascending';
+  }else{
+    sortDirection = 'descending';
+  }
+
+});
 function getSearchString(){
   return $search.val();
 }
