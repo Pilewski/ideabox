@@ -8,6 +8,7 @@ var $search = $('#search-input');
 var $submit = $('#submit-button');
 var $ideaSection = $('#idea-section');
 var $tagButtons = $('#tag-buttons');
+var $sortByQuality = $('#sort-by-quality');
 
 var IdeaBox = {
 
@@ -88,7 +89,6 @@ var IdeaBox = {
       $ideaSection.children('#tag-buttons').prepend(generateTagButtonHTML(this.tagList[i]));
     }
   },
-
   showOrHideIdeas: function(searchString){
     for (var i = 0; i < this.ideas.length; i++) {
       var existingIdea = this.ideas[i];
@@ -132,7 +132,36 @@ var IdeaBox = {
     return this.ideas;
     }
   },
+  sortByQuality: function(direction){
+    var sortedIdeas = [];
+    var quality;
 
+    if(direction === 'descending'){
+      quality = 'swill';
+    }else{
+      quality = 'genius';
+    }
+
+    for(var i = 0; i < 3; i++){//loop through once for each quality
+      for (var j = 0; j < this.ideas.length; j++) {
+        if(this.ideas[j].quality === quality){
+          sortedIdeas.push(this.ideas[j]);
+        }
+      }
+      //change quality check
+      if(direction === 'descending'){
+        quality = qualityUp(quality);
+      }else{
+        quality = qualityDown(quality);
+      }
+    }
+    this.ideas = sortedIdeas;
+
+    $ideaList.html('');
+    for (var k = 0; k < this.ideas.length; k++){
+      $ideaList.prepend(generateListHTML(this.ideas[k]));
+    }
+  }
 };
 
 function Idea(title, body, tags, id, quality) {
@@ -259,6 +288,18 @@ $tagButtons.on('click', '.tag-button', function(){
 
   $(this).toggleClass('selected');
   IdeaBox.showOrHideIdeasByTags();
+});
+
+
+var sortDirection = 'descending';//default
+
+$sortByQuality.on('click', function(){
+  IdeaBox.sortByQuality(sortDirection);
+  if(sortDirection === 'descending'){
+    sortDirection = 'ascending';
+  }else{
+    sortDirection = 'descending';
+  }
 });
 
 function getSearchString(){
