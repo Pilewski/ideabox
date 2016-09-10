@@ -10,11 +10,22 @@ var $ideaSection = $('#idea-section');
 
 var IdeaBox = {
   ideas: [],
+  selectedTags: [],
+  tagList: [],
+
 
   add: function(){
     var newIdea = new Idea(getUserTitle(), getUserBody(), getTags());
     this.ideas.push(newIdea);
+    //get only new tags
+    for (var i = 0; i < newIdea.tags.length; i++){
+      if ( $.inArray(newIdea.tags[i], this.tagList) === -1 ) {
+          this.tagList.push(newIdea.tags[i]);
+        }
+    }
+    //
     this.store();
+    this.renderTags();
     $ideaList.prepend(generateListHTML(newIdea));
   },
   remove: function(id){
@@ -43,6 +54,13 @@ var IdeaBox = {
     }
   },
 
+  renderTags: function(){
+    $ideaSection.children('.tag-buttons').html('');
+    for (var i = 0; i < this.tagList.length; i++) {
+      $ideaSection.children('.tag-buttons').prepend(generateTagButtonHTML(this.tagList[i]));
+    }
+  },
+
   showOrHideIdeas: function(searchString){
     for (var i = 0; i < this.ideas.length; i++) {
       var existingIdea = this.ideas[i];
@@ -54,16 +72,22 @@ var IdeaBox = {
       }
     }
   },
-  store: function(){
+  store: function(idea){
     localStorage.setItem('ideas', ideaStringify(this.ideas));
+    localStorage.setItem('tagList', JSON.stringify(this.tagList));
   },
   retrieve: function(){
     var ideasFromStorage = JSON.parse(localStorage.getItem('ideas'));
-    for (var i = 0; i < ideasFromStorage.length; i++){
-      this.ideas[i] = new Idea(ideasFromStorage[i].title, ideasFromStorage[i].body, ideasFromStorage[i].tags, ideasFromStorage[i].id, ideasFromStorage[i].quality);
-    }
+    this.tagList = JSON.parse(localStorage.getItem('tagList'));
+    if(this.tagList === null) {this.tagList = [];}
+    if(ideasFromStorage!==null){
+      for (var i = 0; i < ideasFromStorage.length; i++){
+        this.ideas[i] = new Idea(ideasFromStorage[i].title, ideasFromStorage[i].body, ideasFromStorage[i].tags, ideasFromStorage[i].id, ideasFromStorage[i].quality);
+      }
     return this.ideas;
+    }
   },
+
 };
 
 function Idea(title, body, tags, id, quality) {
@@ -89,7 +113,6 @@ Idea.prototype.changeTitle = function(text){
 Idea.prototype.changeBody = function(text){
   this.body = text;
 };
-
 
 
 function checkIdeaFieldsEmpty(){
@@ -133,6 +156,7 @@ function addTagsToStorage(idea){
   var tagArray = retrieveTagArray();
 
   for (var i = 0; i < idea.tags.length; i++){
+
   if ( $.inArray(idea.tags[i], tagArray) === -1 ) {
       tagArray.push(idea.tags[i]);
     }
@@ -140,34 +164,16 @@ function addTagsToStorage(idea){
   localStorage.setItem('tagArray', JSON.stringify(tagArray));
 }
 
+
+function populateTagsToPage(){
+  var tagArray = retrieveTagArray();
+  for (var i = 0; i < tagArray.length; i++) {
+    $ideaSection.prepend(generateTagButtonHTML(tagArray[i]));
+  }
+}
+
 function ideaStringify(ideas) {
   return JSON.stringify(ideas);
-}
-
-function ideaToStorage(newIdea) {
-  localStorage.setItem(newIdea.id, ideaStringify(newIdea));
-  addTagsToStorage(newIdea);
-  addIdToArray(newIdea.id);
-}
-
-function addIdToArray(id) {
-  var IdeaIDArray = retrieveIDArray();
-
-  IdeaIDArray.push(id);
-  localStorage.setItem('idArray', JSON.stringify(IdeaIDArray));
-}
-
-function retrieveIdea(id) {
-  return JSON.parse(localStorage.getItem(id));
-}
-
-function retrieveIDArray() {
-
-  if (JSON.parse(localStorage.getItem('idArray')) === null){
-    return [];
-  } else{
-    return JSON.parse(localStorage.getItem('idArray'));
-  }
 }
 
 function generateListHTML(idea){
@@ -211,6 +217,7 @@ $form.submit( function(){
 $(document).ready(function (){
   toggleSubmitDisable();
   IdeaBox.render();
+  IdeaBox.renderTags();
 });
 
 $form.on('keyup', function(){
@@ -219,18 +226,6 @@ $form.on('keyup', function(){
 
 function getSearchString(){
   return $search.val();
-}
-
-function showOrHideIdeas(searchString, ideaIDArray){
-  for (var i = 0; i < ideaIDArray.length; i++) {
-    var existingIdea = retrieveIdea(ideaIDArray[i]);
-
-    if(!(existingIdea.title.includes(searchString)) && !(existingIdea.body.includes(searchString))){
-        $search.siblings().children("[value="+existingIdea.id+"]").hide();
-    } else {
-        $search.siblings().children("[value="+existingIdea.id+"]").show();
-    }
-  }
 }
 
 $search.on('keyup', function(){
@@ -296,9 +291,7 @@ $ideaList.on('mouseleave', '.downvote-btn', function(){
   replaceImage($(this), './imgs/downvote.svg');
 });
 
-function removeIdeaStorage(id) {
-  localStorage.removeItem(id);
-}
+
 
 $ideaList.on('click', '.upvote-btn', function(){
   var id = parseInt($(this).closest('li').attr("value"));
