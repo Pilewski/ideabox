@@ -19,6 +19,7 @@ var IdeaBox = {
   add: function(){
     var newIdea = new Idea(getUserTitle(), getUserBody(), getTags());
     this.ideas.push(newIdea);
+    clearInputFields();
     //get only new tags
     for (var i = 0; i < newIdea.tags.length; i++){
       if ( $.inArray(newIdea.tags[i], this.tagList) === -1 ) {
@@ -165,6 +166,12 @@ function checkIdeaFieldsEmpty(){
   }else{
     return false;
   }
+}
+
+function clearInputFields(){
+  $ideaTitleInput.val('');
+  $ideaBodyInput.val('');
+  $ideaTagInput.val('');
 }
 
 function toggleSubmitDisable(){
