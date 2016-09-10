@@ -7,8 +7,10 @@ var $ideaList = $('#idea-list');
 var $search = $('#search-input');
 var $submit = $('#submit-button');
 var $ideaSection = $('#idea-section');
+var $tagButtons = $('#tag-buttons');
 
 var IdeaBox = {
+
   ideas: [],
   selectedTags: [],
   tagList: [],
@@ -28,6 +30,11 @@ var IdeaBox = {
     this.renderTags();
     $ideaList.prepend(generateListHTML(newIdea));
   },
+  addSelectedTag: function(tag){
+
+    this.selectedTags.push(tag);
+
+  },
   remove: function(id){
     var index;
     for (var i = 0; i < this.ideas.length; i++){
@@ -37,6 +44,11 @@ var IdeaBox = {
     }
     this.ideas.splice(index, 1);
     this.store();
+  },
+  removeSelectedTag: function(tag){
+    var index = this.selectedTags.indexOf(tag);
+
+    this.selectedTags.splice(index, 1);
   },
   find: function(id){
     var ideas = this.retrieve();
@@ -55,9 +67,9 @@ var IdeaBox = {
   },
 
   renderTags: function(){
-    $ideaSection.children('.tag-buttons').html('');
+    $ideaSection.children('#tag-buttons').html('');
     for (var i = 0; i < this.tagList.length; i++) {
-      $ideaSection.children('.tag-buttons').prepend(generateTagButtonHTML(this.tagList[i]));
+      $ideaSection.children('#tag-buttons').prepend(generateTagButtonHTML(this.tagList[i]));
     }
   },
 
@@ -69,6 +81,23 @@ var IdeaBox = {
           $search.siblings().children("[value="+this.ideas[i].id+"]").hide();
       } else {
           $search.siblings().children("[value="+this.ideas[i].id+"]").show();
+      }
+    }
+  },
+  showOrHideIdeasByTags: function(){
+    if(this.selectedTags.length !==0){
+      for (var i = 0; i < this.ideas.length; i++) {
+        // var existingIdea = retrieveIdea(ideaIDArray[i]);
+        if(_.intersection(this.selectedTags, this.ideas[i].tags).length > 0){
+          $search.siblings().children("[value="+this.ideas[i].id+"]").show();
+        } else {
+          $search.siblings().children("[value="+this.ideas[i].id+"]").hide();
+        }
+      }
+    }
+    else{
+      for (var j = 0; j < this.ideas.length; j++) {
+        $search.siblings().children("[value="+this.ideas[j].id+"]").show();
       }
     }
   },
@@ -144,33 +173,6 @@ function getTags(){
   return $ideaTagInput.val().split(',');
 }
 
-function retrieveTagArray(){
-  if (JSON.parse(localStorage.getItem('tagArray')) === null){
-    return [];
-  } else{
-    return JSON.parse(localStorage.getItem('tagArray'));
-  }
-}
-
-function addTagsToStorage(idea){
-  var tagArray = retrieveTagArray();
-
-  for (var i = 0; i < idea.tags.length; i++){
-
-  if ( $.inArray(idea.tags[i], tagArray) === -1 ) {
-      tagArray.push(idea.tags[i]);
-    }
-  }
-  localStorage.setItem('tagArray', JSON.stringify(tagArray));
-}
-
-
-function populateTagsToPage(){
-  var tagArray = retrieveTagArray();
-  for (var i = 0; i < tagArray.length; i++) {
-    $ideaSection.prepend(generateTagButtonHTML(tagArray[i]));
-  }
-}
 
 function ideaStringify(ideas) {
   return JSON.stringify(ideas);
@@ -224,6 +226,19 @@ $form.on('keyup', function(){
   toggleSubmitDisable();
 });
 
+$tagButtons.on('click', '.tag-button', function(){
+  var tag = $(this).text();
+
+  if($(this).hasClass('selected')){
+    IdeaBox.removeSelectedTag(tag);
+  }else{
+    IdeaBox.addSelectedTag(tag);
+  }
+
+  $(this).toggleClass('selected');
+  IdeaBox.showOrHideIdeasByTags();
+});
+
 function getSearchString(){
   return $search.val();
 }
@@ -233,29 +248,7 @@ $search.on('keyup', function(){
   IdeaBox.showOrHideIdeas(searchString);
 });
 
-function showOrHideIdeasByTags(filterTags, ideaIDArray){
-  if(filterTags.length !==0){
-    for (var i = 0; i < ideaIDArray.length; i++) {
-      var existingIdea = retrieveIdea(ideaIDArray[i]);
 
-      if(_.intersection(filterTags, existingIdea.tags).length > 0){
-        $search.siblings().children("[value="+existingIdea.id+"]").show();
-      } else {
-        $search.siblings().children("[value="+existingIdea.id+"]").hide();
-      }
-    }
-  }
-  else{
-    for (var j = 0; j < ideaIDArray.length; j++) {
-      var existingIdea2 = retrieveIdea(ideaIDArray[j]);
-      $search.siblings().children("[value="+existingIdea2.id+"]").show();
-    }
-    }
-}
-
-function addTagButtonsToPage(){
-
-}
 
 $ideaList.on('click', '.delete-btn', function(){
   var id = $(this).closest('li').attr("value");
