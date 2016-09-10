@@ -291,18 +291,17 @@ $tagButtons.on('click', '.tag-button', function(){
 });
 
 
-var sortDirection = 'descending';
+var sortDirection = 'descending';//default
 
 $sortByQuality.on('click', function(){
-
   IdeaBox.sortByQuality(sortDirection);
   if(sortDirection === 'descending'){
     sortDirection = 'ascending';
   }else{
     sortDirection = 'descending';
   }
-
 });
+
 function getSearchString(){
   return $search.val();
 }

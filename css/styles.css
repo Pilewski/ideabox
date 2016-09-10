@@ -28,6 +28,7 @@ input, textarea {
 }
 #submit-button {
     background-color: #00A79D;
+    font-family: 'Open Sans', sans-serif;
     color: #ffffff;
 }
 #submit-button:hover {
@@ -40,19 +41,33 @@ input, textarea {
     background-color: gray;
     color: white;
 }
+#sort-by-quality{
+  background-color: #00A79D;
+  font-family: 'Open Sans', sans-serif;
+  color: #ffffff;
+  display:block;
+  margin: auto;
+  margin-bottom: 10px;
+  width: 100px;
+  height: 25px;
+  cursor: pointer;
+}
 #tag-buttons{
   display:block;
   margin: auto;
   text-align: center;
 }
 .tag-button{
+  border-style: none;
+  border-radius: 2px;
   cursor: pointer;
   margin: 5px;
   background-color: #00A79D;
-  size: 15px;
+  color: #ffffff;
+  font-size: 15px;
 }
 .selected{
-  background-color: yellow;
+  background-color: orange;
 
 }
 ul {
