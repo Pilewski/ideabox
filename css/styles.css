@@ -40,6 +40,21 @@ input, textarea {
     background-color: gray;
     color: white;
 }
+#tag-buttons{
+  display:block;
+  margin: auto;
+  text-align: center;
+}
+.tag-button{
+  cursor: pointer;
+  margin: 5px;
+  background-color: #00A79D;
+  size: 15px;
+}
+.selected{
+  background-color: yellow;
+
+}
 ul {
     width: 400px;
     margin: auto;
