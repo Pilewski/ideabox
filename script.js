@@ -31,9 +31,7 @@ var IdeaBox = {
     $ideaList.prepend(generateListHTML(newIdea));
   },
   addSelectedTag: function(tag){
-
     this.selectedTags.push(tag);
-
   },
   remove: function(id){
     var index;
@@ -42,10 +40,27 @@ var IdeaBox = {
         index = i;
       }
     }
-    this.ideas.splice(index, 1);
+    var tagsToDelete = this.ideas[index].tags;//get tags from tag to be deleted
+    this.ideas.splice(index, 1);//remove idea from list
+    this.parseTagsOnPage(tagsToDelete);
     this.store();
+    this.renderTags();
   },
-  removeSelectedTag: function(tag){
+  parseTagsOnPage: function(tagsToDelete){
+    for(var j = 0; j<tagsToDelete.length; j++){//loop through each tag to be deleted
+      var tagUnique = true;
+      for(var k = 0; k<this.ideas.length; k++){//loop through existing ideas
+          if(this.ideas[k].tags.indexOf(tagsToDelete[j]) !== -1){//check if tag to be deleted is present in idea
+            tagUnique = false;
+          }
+      }
+      if(tagUnique === true){//if tag is unique
+        tagIndex = this.tagList.indexOf(tagsToDelete[j]);//find tag index in tagList array
+        this.tagList.splice(tagIndex,1);//delete tag from array
+      }
+    }
+  },
+  unselectTag: function(tag){
     var index = this.selectedTags.indexOf(tag);
 
     this.selectedTags.splice(index, 1);
@@ -230,7 +245,7 @@ $tagButtons.on('click', '.tag-button', function(){
   var tag = $(this).text();
 
   if($(this).hasClass('selected')){
-    IdeaBox.removeSelectedTag(tag);
+    IdeaBox.unselectTag(tag);
   }else{
     IdeaBox.addSelectedTag(tag);
   }
