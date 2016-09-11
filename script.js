@@ -218,14 +218,15 @@ function getUserBody () {
 }
 
 function getTags(){
-  var tagArray = $ideaTagInput.val().split(',');
+  var tag = $ideaTagInput.val();
+  var tagArray = tag.split(',');
   for (var i = 0; i < tagArray.length; i++) {
-    if ( tagArray[i] == " " || "") {
-      tagArray[i].pop();
+      tagArray[i] = " " + tagArray[i].trim();
     }
-    tagArray[i] = tagArray[i].trim();
-  }
-  return tagArray;
+    tagArray = tagArray.filter(function(str){
+      return /\S/.test(str);
+    });
+    return tagArray;
 }
 
 function ideaStringify(ideas) {

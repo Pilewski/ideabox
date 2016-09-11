@@ -131,6 +131,7 @@ h2 {
 }
 .idea-footer {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     margin-bottom: 15px;
 }
@@ -148,4 +149,7 @@ h2 {
 }
 .idea-quality {
     margin-left: .5em;
+}
+#tag-list {
+    /*width: 100%;*/
 }
