@@ -9,7 +9,6 @@ var $submit = $('#submit-button');
 var $ideaSection = $('#idea-section');
 var $tagButtons = $('#tag-buttons');
 var $sortByQuality = $('#sort-by-quality');
-var $tagList = $('#tag-list')
 
 var IdeaBox = {
 
@@ -20,7 +19,6 @@ var IdeaBox = {
 
   add: function(){
     var newIdea = new Idea(getUserTitle(), getUserBody(), getTags());
-    debugger;
     this.ideas.push(newIdea);
     clearInputFields();
     //get only new tags
@@ -86,10 +84,8 @@ var IdeaBox = {
 
   renderTags: function(){
     $ideaSection.children('#tag-buttons').html('');
-    $tagList.html('');
     for (var i = 0; i < this.tagList.length; i++) {
       $ideaSection.children('#tag-buttons').prepend(generateTagButtonHTML(this.tagList[i]));
-      $tagList.children('#tag-buttons').prepend(generateTagButtonHTML(this.tagList[i]));
     }
   },
   showOrHideIdeas: function(searchString){
