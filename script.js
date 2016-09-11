@@ -19,6 +19,7 @@ var IdeaBox = {
 
   add: function(){
     var newIdea = new Idea(getUserTitle(), getUserBody(), getTags());
+    debugger;
     this.ideas.push(newIdea);
     clearInputFields();
     //get only new tags
@@ -27,7 +28,7 @@ var IdeaBox = {
           this.tagList.push(newIdea.tags[i]);
         }
     }
-    //
+
     this.store();
     this.renderTags();
     $ideaList.prepend(generateListHTML(newIdea));
@@ -218,7 +219,14 @@ function getUserBody () {
 }
 
 function getTags(){
-  return $ideaTagInput.val().split(',');
+  var tagArray = $ideaTagInput.val().split(',');
+  for (var i = 0; i < tagArray.length; i++) {
+    if ( tagArray[i] == " " || "") {
+      tagArray[i].pop();
+    }
+    tagArray[i] = tagArray[i].trim();
+  }
+  return tagArray;
 }
 
 
