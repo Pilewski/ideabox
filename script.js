@@ -9,6 +9,7 @@ var $submit = $('#submit-button');
 var $ideaSection = $('#idea-section');
 var $tagButtons = $('#tag-buttons');
 var $sortByQuality = $('#sort-by-quality');
+var $tagList = $('#tag-list')
 
 var IdeaBox = {
 
@@ -85,8 +86,10 @@ var IdeaBox = {
 
   renderTags: function(){
     $ideaSection.children('#tag-buttons').html('');
+    $tagList.html('');
     for (var i = 0; i < this.tagList.length; i++) {
       $ideaSection.children('#tag-buttons').prepend(generateTagButtonHTML(this.tagList[i]));
+      $tagList.children('#tag-buttons').prepend(generateTagButtonHTML(this.tagList[i]));
     }
   },
   showOrHideIdeas: function(searchString){
@@ -229,7 +232,6 @@ function getTags(){
   return tagArray;
 }
 
-
 function ideaStringify(ideas) {
   return JSON.stringify(ideas);
 }
@@ -251,6 +253,7 @@ function generateListHTML(idea){
         "<article class='idea-quality'>"+
           idea.quality+
         "</article>"+
+        "<span id='tag-list'>"+idea.tags+"</span>"+
       "</div>"+
     "</li>";
 }
