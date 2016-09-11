@@ -19,4 +19,7 @@
     #search-input {
         width: 90%;
     }
+    #tag-list:last-child {
+      margin-left: 10px;
+    }
 }
