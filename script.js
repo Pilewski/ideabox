@@ -64,7 +64,6 @@ var IdeaBox = {
   },
   unselectTag: function(tag){
     var index = this.selectedTags.indexOf(tag);
-
     this.selectedTags.splice(index, 1);
   },
   find: function(id){
@@ -103,8 +102,7 @@ var IdeaBox = {
   showOrHideIdeasByTags: function(){
     if(this.selectedTags.length !==0){
       for (var i = 0; i < this.ideas.length; i++) {
-        // var existingIdea = retrieveIdea(ideaIDArray[i]);
-        if(_.intersection(this.selectedTags, this.ideas[i].tags).length > 0){
+        if(_.intersection(this.selectedTags, this.ideas[i].tags).length >= this.selectedTags.length){
           $search.siblings().children("[value="+this.ideas[i].id+"]").show();
         } else {
           $search.siblings().children("[value="+this.ideas[i].id+"]").hide();
@@ -211,7 +209,6 @@ function toggleSubmitDisable(){
   }
 }
 
-
 function getUserTitle () {
   return $ideaTitleInput.val();
 }
@@ -311,8 +308,6 @@ $search.on('keyup', function(){
   IdeaBox.showOrHideIdeas(searchString);
 });
 
-
-
 $ideaList.on('click', '.delete-btn', function(){
   var id = $(this).closest('li').attr("value");
   $(this).closest('li').remove();
@@ -346,7 +341,6 @@ $ideaList.on('mouseover', '.downvote-btn', function(){
 $ideaList.on('mouseleave', '.downvote-btn', function(){
   replaceImage($(this), './imgs/downvote.svg');
 });
-
 
 
 $ideaList.on('click', '.upvote-btn', function(){
