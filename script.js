@@ -250,7 +250,7 @@ function generateListHTML(idea){
         "<article class='idea-quality'>"+
           idea.quality+
         "</article>"+
-        "<span id='tag-list'>"+idea.tags+"</span>"+
+        "<span id='tag-list'> tags:"+idea.tags+"</span>"+
       "</div>"+
     "</li>";
 }
