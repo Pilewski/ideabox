@@ -131,8 +131,13 @@ h2 {
 }
 .idea-footer {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     margin-bottom: 15px;
+}
+.idea-footer::after {
+  content: '';
+  width: 100%;
 }
 .upvote-btn, .downvote-btn {
     display: inline-block;
@@ -148,4 +153,11 @@ h2 {
 }
 .idea-quality {
     margin-left: .5em;
+}
+#tag-list:last-child {
+    color: #045E55;
+    font-size: 13px;
+    font-weight: bolder;
+    margin-left: 21%;
+    order: 1;
 }

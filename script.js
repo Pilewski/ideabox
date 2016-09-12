@@ -27,7 +27,7 @@ var IdeaBox = {
           this.tagList.push(newIdea.tags[i]);
         }
     }
-    //
+
     this.store();
     this.renderTags();
     $ideaList.prepend(generateListHTML(newIdea));
@@ -218,9 +218,16 @@ function getUserBody () {
 }
 
 function getTags(){
-  return $ideaTagInput.val().split(',');
+  var tag = $ideaTagInput.val();
+  var tagArray = tag.split(',');
+  for (var i = 0; i < tagArray.length; i++) {
+      tagArray[i] = " " + tagArray[i].trim();
+    }
+    tagArray = tagArray.filter(function(str){
+      return /\S/.test(str);
+    });
+    return tagArray;
 }
-
 
 function ideaStringify(ideas) {
   return JSON.stringify(ideas);
@@ -243,6 +250,7 @@ function generateListHTML(idea){
         "<article class='idea-quality'>"+
           idea.quality+
         "</article>"+
+        "<span id='tag-list'> tags:"+idea.tags+"</span>"+
       "</div>"+
     "</li>";
 }
